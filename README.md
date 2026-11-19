@@ -89,3 +89,46 @@ python -m pytest
 - Mantenham o código organizado em módulos pequenos e com responsabilidade clara.
 - Comentem partes importantes da lógica, principalmente regras do jogo.
 - Registrem decisões técnicas no README do grupo ao longo do desenvolvimento.
+
+```
+atividade-pygame
+├─ assets
+│  ├─ .DS_Store
+│  ├─ fontes
+│  │  └─ README.md
+│  ├─ imagens
+│  │  ├─ README.md
+│  │  └─ spritesheet.bmp
+│  ├─ README.md
+│  └─ sons
+│     └─ README.md
+├─ data
+│  ├─ ranking.txt
+│  ├─ README.md
+│  └─ recorde.txt
+├─ docs
+│  ├─ proposta.MD
+│  └─ README.md
+├─ main.py
+├─ README.md
+├─ requirements.txt
+├─ src
+│  ├─ dados.py
+│  ├─ funcoes.py
+│  ├─ jogo.py
+│  ├─ map.py
+│  ├─ player.py
+│  ├─ raycasting.py
+│  ├─ README.md
+│  ├─ settings.py
+│  ├─ sprites.py
+│  ├─ __init__.py
+│  └─ __pycache__
+│     ├─ map.cpython-314.pyc
+│     ├─ player.cpython-314.pyc
+│     └─ settings.cpython-314.pyc
+└─ tests
+   ├─ README.md
+   └─ test_logica.py
+
+```
