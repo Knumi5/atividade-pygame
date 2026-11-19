@@ -1,38 +1,45 @@
 import pygame as pg
-_ = False
-# 0 será para as tarefas.
 
+_ = False  # Espaço livre onde o jogador pode caminhar
+# 0 será usado para marcar tarefas no mapa.
+
+# Grade 2D do cenário: cada célula tem tamanho 1x1 no espaço lógico do jogo
 mini_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, _, _, 1, _, _, _, 1 , _, _, _, _, _, _, _, 1],
-    [1, _, _, 1, _, _, _, 1 , _, _, _, _, _, _, _, 1],
-    [1, _, _, 1, 1, _, 1, 1 , _, _, 1, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _ , _, _, 1, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _ , _, _, 1, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _ , _, _, 1, 1, 1, 1, 1, 1],
-    [1, _, _, _, _, _, _, _ , _, _, _, _, _, _, _, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [1, _, _, 1, _, _, _, 1, _, _, _, _, _, _, _, 1],
+    [1, _, _, 1, _, _, _, 1, _, _, _, _, _, _, _, 1],
+    [1, _, _, 1, 1, _, 1, 1, _, _, 1, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, 1, 1, 1, 1, 1, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
+
 class Map:
-    """
-    Essa classe recebe game.
-    funções:
-    get_map() recebe o mapa do jogo e o converte para o dicionário de pontos no mapa (world_map = {}), tal que J = [x] e I = [y]
-    draw() desenha o mapa, aonde o mapa é 1 ele desenha paredes, aonde é _ ele não desenha.
-    """
+    """Representa o mapa do jogo a partir da grade 2D (mini_map)."""
+
     def __init__(self, game):
+        """Inicializa o mapa e constrói o dicionário de paredes."""
         self.game = game
         self.mini_map = mini_map
         self.world_map = {}
         self.get_map()
 
     def get_map(self):
-        for j, row in enumerate(self.mini_map):
-            for i, value in enumerate(row):
-                if value:
-                    self.world_map[(i, j)] = value
+        """Converte a matriz mini_map no dicionário world_map[(x, y)] = tipo_parede."""
+        for linha_y, linha in enumerate(self.mini_map):
+            for coluna_x, valor in enumerate(linha):
+                if valor:
+                    self.world_map[(coluna_x, linha_y)] = valor
 
     def draw(self):
-        [pg.draw.rect(self.game.screen, 'darkgrey', (pos[0] * 100, pos[1] * 100, 100, 100), 2) 
-        for pos in self.world_map]
+        """Desenha a grade 2D das paredes na tela (útil para depuração em 2D)."""
+        for pos in self.world_map:
+            pg.draw.rect(
+                self.game.screen,
+                'darkgrey',
+                (pos[0] * 100, pos[1] * 100, 100, 100),
+                2,
+            )

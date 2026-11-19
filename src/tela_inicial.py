@@ -1,9 +1,11 @@
 import pygame as pg
-import math
 
 
 class Tela_inicial:
+    """Gerencia a exibição e navegação pelo teclado na tela inicial do jogo."""
+
     def __init__(self, game):
+        """Configura fontes e opções do menu principal."""
         self.game = game
         self.fonte_titulo = pg.font.SysFont('arial', 72, bold=True)
         self.fonte_opcao = pg.font.SysFont('arial', 40)
@@ -11,27 +13,25 @@ class Tela_inicial:
         self.selecionada = 0
 
     def tratar_evento(self, evento):
-        '''
-        Essa função faz o jogador ter que usar as teclas (w, s) para
-        navegar pelas opções da tela inicial e para seleciona-la pressione (space)
-
-        '''
+        """Navega pelas opções com W/S ou setas e confirma com Enter ou Espaço."""
         if evento.type == pg.KEYDOWN:
             if evento.key in (pg.K_UP, pg.K_w):
                 self.selecionada = (self.selecionada - 1) % len(self.opcoes)
             elif evento.key in (pg.K_DOWN, pg.K_s):
-                    self.selecionada = (self.selecionada + 1) % len(self.opcoes)
+                self.selecionada = (self.selecionada + 1) % len(self.opcoes)
             elif evento.key in (pg.K_RETURN, pg.K_SPACE):
                 self.confirmar()
 
     def confirmar(self):
-        if self.opcoes[self.selecionada] == "Jogar":
-            # Chama a função de iniciar_jogo() de jogo.py
+        """Executa a ação correspondente à opção atualmente selecionada."""
+        opcao_atual = self.opcoes[self.selecionada]
+        if opcao_atual == "Jogar":
             self.game.iniciar_jogo()
-        elif self.opcoes[self.selecionada] == "Sair do jogo":
+        elif opcao_atual == "Sair do jogo":
             self.game.sair()
 
     def draw(self):
+        """Desenha o título do jogo e a lista de opções na tela."""
         tela = self.game.screen
         largura, altura = tela.get_size()
         tela.fill("black")
@@ -39,11 +39,10 @@ class Tela_inicial:
         titulo = self.fonte_titulo.render("Try // Except", True, "white")
         tela.blit(titulo, titulo.get_rect(center=(largura // 2, altura // 4)))
 
-        for i, texto in enumerate(self.opcoes):
-            if i == self.selecionada:
-                cor = "yellow"
-            else:
-                cor = "gray"
-
-            surf = self.fonte_opcao.render(texto, True, cor)
-            tela.blit(surf, surf.get_rect(center=(largura // 2, altura // 2 + i * 70)))
+        for indice, texto in enumerate(self.opcoes):
+            cor = "yellow" if indice == self.selecionada else "gray"
+            superficie = self.fonte_opcao.render(texto, True, cor)
+            tela.blit(
+                superficie,
+                superficie.get_rect(center=(largura // 2, altura // 2 + indice * 70)),
+            )
