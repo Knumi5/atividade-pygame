@@ -8,21 +8,33 @@ else:
 
 
 class RayCasting:
-    """Calcula a distância até as paredes via raycasting (DDA) e projeta o cenário em 3D."""
+    """Calcula a distância até as paredes via raycasting (DDA) e projeta o cenário em 3D.
+
+    Parâmetros (no construtor):
+        game (Game): Instância principal do jogo, usada para acessar `player`, `map` e `screen`.
+    """
 
     def __init__(self, game):
-        """Inicializa o sistema de raycasting ligado à instância principal do jogo."""
+        """Inicializa o sistema de raycasting ligado à instância principal do jogo.
+
+        Parâmetros:
+            game (Game): Instância principal do jogo.
+        """
         self.game = game
         self.ray_casting_result = []
 
     def ray_cast(self):
-        """Lança NUM_RAYS raios no campo de visão e calcula a altura projetada de cada coluna."""
+        """Lança `NUM_RAYS` raios no campo de visão e calcula a altura projetada de cada coluna.
+
+        Parâmetros:
+            Nenhum (lê posição/ângulo de `self.game.player` e paredes de `self.game.map`).
+        """
         self.ray_casting_result = []
         textura_vertical, textura_horizontal = 1, 1
         origem_x, origem_y = self.game.player.pos
         celula_x, celula_y = self.game.player.map_pos
 
-        # Pequeno deslocamento inicial evita divisão exata por zero em ângulos retos (por isso o 0.000001!)
+        # Pequeno deslocamento inicial evita divisão exata por zero em ângulos retos
         angulo_raio = self.game.player.angle - HALF_FOV + 0.0001
         for raio in range(NUM_RAYS):
             seno_a = math.sin(angulo_raio)
@@ -68,7 +80,7 @@ class RayCasting:
             else:
                 profundidade = profundidade_horizontal
 
-            # Corrige o efeito fish eye (distorção nas bordas do FOV)
+            # Corrige o efeito olho de peixe (distorção nas bordas do FOV)
             profundidade *= math.cos(self.game.player.angle - angulo_raio)
 
             # Converte a distância da parede em altura em pixels na tela
@@ -78,7 +90,11 @@ class RayCasting:
             angulo_raio += DELTA_ANGLE
 
     def draw(self):
-        """Desenha as colunas 3D na tela com sombreamento baseado na distância."""
+        """Desenha as colunas 3D na tela com sombreamento baseado na distância.
+
+        Parâmetros:
+            Nenhum (usa os resultados salvos em `self.ray_casting_result` e `self.game.screen`).
+        """
         for raio, profundidade, altura_projetada in self.ray_casting_result:
             # Quanto maior a distância, mais escura fica a parede
             intensidade = 255 / (1 + max(profundidade, 0) ** 5 * 0.00002)
@@ -90,5 +106,9 @@ class RayCasting:
             )
 
     def update(self):
-        """Recalcula todos os raios para o frame atual."""
+        """Recalcula todos os raios para o frame atual.
+
+        Parâmetros:
+            Nenhum.
+        """
         self.ray_cast()
