@@ -1,68 +1,86 @@
 import pygame as pg
 import math
-from settings import *
+if __package__:
+    from .settings import *
+else:
+    from settings import *
 
 class RayCasting:
     def __init__(self, game):
         self.game = game
+        self.ray_casting_result = []
 
     def ray_cast(self):
+        self.ray_casting_result = []
+        texture_vert, texture_hor = 1, 1
         ox, oy = self.game.player.pos
         x_map, y_map = self.game.player.map_pos
-        ray_angle = self.game.player.angle - HALF_FOV + 0.001
+
+        ray_angle = self.game.player.angle - HALF_FOV + 0.0001
         for ray in range(NUM_RAYS):
-            seno_a = math.sin(ray_angle)
-            cosseno_a = math.cos(ray_angle)
+            sin_a = math.sin(ray_angle)
+            cos_a = math.cos(ray_angle)
 
-            #RAIOS COM INTERSEÇÕES HORIZONTAIS:
+            # horizontals
+            y_hor, dy = (y_map + 1, 1) if sin_a > 0 else (y_map - 1e-6, -1)
 
-            if seno_a > 0:
-                y_hor, dy = (y_map + 1, 1)
-            else:
-                y_hor, dy = (y_map -1e-6, -1)
-            
-            profundidade_horizontal = (y_hor - oy) / seno_a
-            x_hor = ox + profundidade_horizontal * cosseno_a
+            depth_hor = (y_hor - oy) / sin_a
+            x_hor = ox + depth_hor * cos_a
 
-            delta_profundidade = dy / seno_a
-            dx = delta_profundidade * cosseno_a
+            delta_depth = dy / sin_a
+            dx = delta_depth * cos_a
 
             for i in range(MAX_DEPTH):
                 tile_hor = int(x_hor), int(y_hor)
                 if tile_hor in self.game.map.world_map:
+                    texture_hor = self.game.map.world_map[tile_hor]
                     break
                 x_hor += dx
                 y_hor += dy
-                profundidade_horizontal += delta_profundidade
-            
-            #RAIOS COM INTERSEÇÕES VERTICAIS:
-            if cosseno_a > 0:
-                x_vert, dx = (x_map + 1, 1)
-            else:
-                x_vert, dx = (x_map -1e-6, -1)
-            profundidade_vertical = (x_vert - ox) / cosseno_a
+                depth_hor += delta_depth
 
-            y_vert = oy + profundidade_vertical * seno_a
-            delta_profundidade = dx / cosseno_a
-            dy = delta_profundidade * seno_a
+            # verticals
+            x_vert, dx = (x_map + 1, 1) if cos_a > 0 else (x_map - 1e-6, -1)
+
+            depth_vert = (x_vert - ox) / cos_a
+            y_vert = oy + depth_vert * sin_a
+
+            delta_depth = dx / cos_a
+            dy = delta_depth * sin_a
 
             for i in range(MAX_DEPTH):
                 tile_vert = int(x_vert), int(y_vert)
                 if tile_vert in self.game.map.world_map:
+                    texture_vert = self.game.map.world_map[tile_vert]
                     break
                 x_vert += dx
                 y_vert += dy
-                profundidade_vertical += profundidade_vertical
+                depth_vert += delta_depth
 
-            # PROFUNDIDADE
+            #depth 
 
-        if profundidade_vertical < profundidade_horizontal:
-            profundidade = profundidade_vertical
-        else:
-            profundidade = profundidade_horizontal
+            if depth_vert < depth_hor:
+                depth = depth_vert
+            else:
+                depth = depth_hor
 
-        
-            
+            # remove o efeito olho de peixe (fish-eye)
+            depth *= math.cos(self.game.player.angle - ray_angle)
+
+            # projeção 3D
+            proj_height = SCREEN_DIST / (depth + 0.0001)
+            self.ray_casting_result.append((ray, depth, proj_height))
+
             ray_angle += DELTA_ANGLE
+
+    def draw(self):
+        for ray, depth, proj_height in self.ray_casting_result:
+            color = [255 / (1 + max(depth, 0) ** 5 * 0.00002)] * 3
+            pg.draw.rect(
+                self.game.screen,
+                color,
+                (ray * SCALE, HALF_HEIGHT - proj_height // 2, SCALE, proj_height),
+            )
+
     def update(self):
         self.ray_cast()

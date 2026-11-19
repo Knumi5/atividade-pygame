@@ -22,14 +22,14 @@ class Tela_inicial:
             elif evento.key in (pg.K_DOWN, pg.K_s):
                     self.selecionada = (self.selecionada + 1) % len(self.opcoes)
             elif evento.key in (pg.K_RETURN, pg.K_SPACE):
-                 self.confirmar()
+                self.confirmar()
 
     def confirmar(self):
         if self.opcoes[self.selecionada] == "Jogar":
             # Chama a função de iniciar_jogo() de jogo.py
             self.game.iniciar_jogo()
         elif self.opcoes[self.selecionada] == "Sair do jogo":
-             self.game.sair()
+            self.game.sair()
 
     def draw(self):
         tela = self.game.screen
@@ -47,5 +47,3 @@ class Tela_inicial:
 
             surf = self.fonte_opcao.render(texto, True, cor)
             tela.blit(surf, surf.get_rect(center=(largura // 2, altura // 2 + i * 70)))
-
-         

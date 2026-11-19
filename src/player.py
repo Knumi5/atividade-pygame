@@ -1,4 +1,7 @@
-from settings import *
+if __package__:
+    from .settings import *
+else:
+    from settings import *
 import pygame as pg
 import math
 
@@ -32,13 +35,17 @@ class Player:
             dy += speed_cos
 
         self.checar_colisao_parede(dx, dy)
-        
-        if keys[pg.K_LEFT]:
-            self.angle -= PLAYER_ROT_SPEED * self.game.delta_time
-        if keys[pg.K_RIGHT]:
-            self.angle += PLAYER_ROT_SPEED * self.game.delta_time
-        
-        self.angle %= math.tau # tau = 2 * pi
+
+    def mouse_control(self):
+        mx, _ = pg.mouse.get_pos()
+        self.rel = pg.mouse.get_rel()[0]
+        self.rel = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel))
+        self.angle += self.rel * MOUSE_SENSITIVITY * self.game.delta_time
+        self.angle %= math.tau  # tau = 2 * pi
+
+        if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
+            pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
+            pg.mouse.get_rel()
 
     def checar_parede(self, x, y):
         return (x, y) not in self.game.map.world_map
@@ -50,11 +57,12 @@ class Player:
             self.y += dy
 
     def draw(self):
-        pg.draw.line(self.game.screen, 'yellow', (self.x * 100, self.y * 100), (self.x * 100 + WIDTH * math.cos(self.angle), self.y * 100 + WIDTH * math.sin(self.angle)), 2) 
+        # pg.draw.line(self.game.screen, 'yellow', (self.x * 100, self.y * 100), (self.x * 100 + WIDTH * math.cos(self.angle), self.y * 100 + WIDTH * math.sin(self.angle)), 2) 
         pg.draw.circle(self.game.screen, 'green', (self.x * 100, self.y * 100), 15)
 
     def update(self):
         self.movement()
+        self.mouse_control()
 
     @property
     def pos(self):

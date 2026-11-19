@@ -1,9 +1,17 @@
 import pygame as pg
 import sys
-from settings import *
-from map import *
-from player import *
-from tela_inicial import Tela_inicial
+if __package__:
+    from .settings import *
+    from .map import *
+    from .player import *
+    from .tela_inicial import Tela_inicial
+    from .raycasting import RayCasting
+else:
+    from settings import *
+    from map import *
+    from player import *
+    from tela_inicial import Tela_inicial
+    from raycasting import RayCasting
 
 class Game:
     def __init__(self):
@@ -19,18 +27,26 @@ class Game:
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
+        self.raycasting = RayCasting(self)
 
     def iniciar_jogo(self):
         self.new_game()
         self.estado = "jogando"
+        pg.mouse.set_visible(False)
+        pg.event.set_grab(True)
+        pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
+        pg.mouse.get_rel()
 
     def sair(self):
+        pg.event.set_grab(False)
+        pg.mouse.set_visible(True)
         pg.quit()
         sys.exit()
 
     def update(self):
         if self.estado == "jogando":
             self.player.update()
+            self.raycasting.update()
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps():.1f}')
 
@@ -39,8 +55,7 @@ class Game:
             self.tela_inicial.draw()
         else:
             self.screen.fill('black')
-            self.map.draw()
-            self.player.draw()
+            self.raycasting.draw()
         pg.display.flip()   # flip depois de desenhar
         
     def check_events(self):
@@ -56,6 +71,10 @@ class Game:
             self.update()
             self.draw()
 
-if __name__ == '__main__':
+def executar_jogo():
     game = Game()
     game.run()
+
+
+if __name__ == '__main__':
+    executar_jogo()
