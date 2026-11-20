@@ -74,31 +74,41 @@ class RayCasting:
                 y_vert += passo_y
                 profundidade_vertical += passo_profundidade
 
-            # Escolhe a interseção mais próxima do jogador
+            # Escolhe a interseção mais próxima do jogador e identifica o tipo do bloco
             if profundidade_vertical < profundidade_horizontal:
                 profundidade = profundidade_vertical
+                bloco_tipo = textura_vertical
             else:
                 profundidade = profundidade_horizontal
+                bloco_tipo = textura_horizontal
 
             # Corrige o efeito olho de peixe (distorção nas bordas do FOV)
             profundidade *= math.cos(self.game.player.angle - angulo_raio)
 
             # Converte a distância da parede em altura em pixels na tela
             altura_projetada = SCREEN_DIST / (profundidade + 0.0001)
-            self.ray_casting_result.append((raio, profundidade, altura_projetada))
+            self.ray_casting_result.append((raio, profundidade, altura_projetada, bloco_tipo))
 
             angulo_raio += DELTA_ANGLE
 
     def draw(self):
-        """Desenha as colunas 3D na tela com sombreamento baseado na distância.
+        """Desenha as colunas 3D na tela diferenciando paredes comuns e terminais de tarefa.
 
         Parâmetros:
             Nenhum (usa os resultados salvos em `self.ray_casting_result` e `self.game.screen`).
         """
-        for raio, profundidade, altura_projetada in self.ray_casting_result:
+        for raio, profundidade, altura_projetada, bloco_tipo in self.ray_casting_result:
             # Quanto maior a distância, mais escura fica a parede
             intensidade = 255 / (1 + max(profundidade, 0) ** 5 * 0.00002)
-            cor = (intensidade, intensidade, intensidade)
+            if bloco_tipo == 2:
+                # Terminal de tarefa pendente (azul/ciano)
+                cor = (0, int(intensidade * 0.8), int(intensidade))
+            elif bloco_tipo == 3:
+                # Terminal de tarefa concluída (verde)
+                cor = (0, int(intensidade), int(intensidade * 0.4))
+            else:
+                cor = (intensidade, intensidade, intensidade)
+
             pg.draw.rect(
                 self.game.screen,
                 cor,

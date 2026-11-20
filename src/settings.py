@@ -16,6 +16,13 @@ PLAYER_ANGLE = 0     # Ângulo inicial em radianos
 PLAYER_SPEED = 0.004
 PLAYER_ROT_SPEED = 0.002
 
+# Regras das rodadas infinitas (pontuação / leaderboard)
+CHANCES_INICIAIS = 5
+TAREFAS_POR_RODADA = 3       # Configurável entre 1 e 7 tarefas por rodada
+TEMPO_INICIAL_RODADA = 45.0  # Tempo (em segundos) da 1ª rodada
+REDUCAO_TEMPO_RODADA = 3.0   # Segundos reduzidos a cada rodada vencida
+TEMPO_MINIMO_RODADA = 15.0   # Limite mínimo de tempo por rodada
+
 # Configurações de controle da câmera pelo mouse
 MOUSE_SENSITIVITY = 0.0003
 MOUSE_MAX_REL = 40   # Limita saltos bruscos do cursor por frame
