@@ -46,6 +46,8 @@ class Tela_inicial:
             self.game.iniciar_jogo()
         elif opcao_atual == "Sair do jogo":
             self.game.sair()
+        elif opcao_atual == "Guia":                  # NOVO
+            self.game.estado = "guia"                # NOVO
 
     def draw(self):
         """Desenha o título do jogo e a lista de opções na tela.
