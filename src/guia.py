@@ -13,7 +13,7 @@ class Guia_jogo:
         ("comando", "Mouse 1 / E", "interagir com as tarefas"),
         ("texto", "Ache as tarefas pelo mapa e termine-as antes do tempo acabar!"),
         ("texto", "As tarefas não são indicadas, então explore cada canto e use o mouse "
-          "para olhar ao redor."),
+        "para olhar ao redor."),
         ("texto", "Ao chegar perto de uma tarefa, aperte Mouse 1 ou E para interagir com ela."),
         
         ("texto", "O chefe irá aparecer a cada 30 segundo, quando ele chegar vá até ele e comprimente-o")]
@@ -86,6 +86,15 @@ class Guia_jogo:
 
     def rolar(self, delta):
         self.scroll = max(0, min(self.scroll_max, self.scroll + delta))
+
+    def voltar(self):
+        """Retorna ao menu principal e reinicia a posição da rolagem.
+
+        Parâmetros:
+            Nenhum.
+        """
+        self.scroll = 0
+        self.game.estado = "menu"
 
     def draw(self):
         tela = self.game.screen

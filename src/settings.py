@@ -39,6 +39,13 @@ MAX_DEPTH = 20                     # Alcance máximo de cada raio (em células)
 SCREEN_DIST = HALF_WIDTH / math.tan(HALF_FOV)  # Distância até o plano de projeção
 SCALE = WIDTH // NUM_RAYS          # Largura em pixels de cada coluna 3D
 
+# Cores do cenário 3D (estilo escritório)
+COR_TETO = (38, 42, 48)
+COR_CHAO = (50, 56, 66)
+COR_PAREDE_ESCRITORIO = (175, 162, 138)  # Bege corporativo
+COR_TAREFA_PENDENTE = (0, 200, 255)      # Terminal azul/ciano
+COR_TAREFA_CONCLUIDA = (0, 220, 100)     # Terminal verde
+
 # Caminhos absolutos para arquivos persistentes e recursos
 CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
 CAMINHO_SPRITES = str(BASE_DIR / "assets" / "imagens" / "spritesheet.bmp")

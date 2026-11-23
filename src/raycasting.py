@@ -74,40 +74,46 @@ class RayCasting:
                 y_vert += passo_y
                 profundidade_vertical += passo_profundidade
 
-            # Escolhe a interseção mais próxima do jogador e identifica o tipo do bloco
+            # Escolhe a interseção mais próxima do jogador, o tipo do bloco e o sombreamento da face
             if profundidade_vertical < profundidade_horizontal:
                 profundidade = profundidade_vertical
                 bloco_tipo = textura_vertical
+                fator_face = 1.0
             else:
                 profundidade = profundidade_horizontal
                 bloco_tipo = textura_horizontal
+                fator_face = 0.85  # Escurece levemente faces horizontais para destacar quinas
 
             # Corrige o efeito olho de peixe (distorção nas bordas do FOV)
             profundidade *= math.cos(self.game.player.angle - angulo_raio)
 
             # Converte a distância da parede em altura em pixels na tela
             altura_projetada = SCREEN_DIST / (profundidade + 0.0001)
-            self.ray_casting_result.append((raio, profundidade, altura_projetada, bloco_tipo))
+            self.ray_casting_result.append((raio, profundidade, altura_projetada, bloco_tipo, fator_face))
 
             angulo_raio += DELTA_ANGLE
 
     def draw(self):
-        """Desenha as colunas 3D na tela diferenciando paredes comuns e terminais de tarefa.
+        """Desenha as colunas 3D na tela diferenciando paredes bege e terminais de tarefa.
 
         Parâmetros:
             Nenhum (usa os resultados salvos em `self.ray_casting_result` e `self.game.screen`).
         """
-        for raio, profundidade, altura_projetada, bloco_tipo in self.ray_casting_result:
+        for raio, profundidade, altura_projetada, bloco_tipo, fator_face in self.ray_casting_result:
             # Quanto maior a distância, mais escura fica a parede
-            intensidade = 255 / (1 + max(profundidade, 0) ** 5 * 0.00002)
+            sombra = (1 / (1 + max(profundidade, 0) ** 5 * 0.00002)) * fator_face
             if bloco_tipo == 2:
-                # Terminal de tarefa pendente (azul/ciano)
-                cor = (0, int(intensidade * 0.8), int(intensidade))
+                cor_base = COR_TAREFA_PENDENTE
             elif bloco_tipo == 3:
-                # Terminal de tarefa concluída (verde)
-                cor = (0, int(intensidade), int(intensidade * 0.4))
+                cor_base = COR_TAREFA_CONCLUIDA
             else:
-                cor = (intensidade, intensidade, intensidade)
+                cor_base = COR_PAREDE_ESCRITORIO
+
+            cor = (
+                int(cor_base[0] * sombra),
+                int(cor_base[1] * sombra),
+                int(cor_base[2] * sombra),
+            )
 
             pg.draw.rect(
                 self.game.screen,

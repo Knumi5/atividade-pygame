@@ -37,15 +37,19 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.delta_time = 1
-        self.estado = "menu"  # Pode ser "menu", "jogando" ou "game_over"
+        self.estado = "menu"  # Pode ser "menu", "guia", "jogando" ou "game_over"
         self.tela_inicial = Tela_inicial(self)
-        self.fonte_hud = pg.font.SysFont('arial', 64, bold=True)
+        self.fonte_hud = pg.font.SysFont('arial', 24, bold=True)
+        self.fonte_hud_destaque = pg.font.SysFont('arial', 32, bold=True)
+        self.fonte_gameover = pg.font.SysFont('arial', 72, bold=True)
         self.rodada = 1
         self.chances = CHANCES_INICIAIS
         self.pontos = 0
         self.recorde = carregar_recorde(CAMINHO_RECORDE)
         self.tempo_limite_rodada = TEMPO_INICIAL_RODADA
         self.tempo_restante = TEMPO_INICIAL_RODADA
+        self.aviso_chefe = ""
+        self.painel_pergunta = None
         self.tela_guia = Guia_jogo(self)      # NOVO
 
     def new_game(self, nome_mapa="aleatorio"):
@@ -164,22 +168,100 @@ class Game:
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(titulo_janela)
 
-    def desenhar_hud(self):
-        """Desenha as informações da rodada (rodada, tarefas, tempo, chances e pontuação).
+    def _desenhar_caixa_hud(self, superficies, pos_x, pos_y, espacamento=8, alinhar_direita=False):
+        """Desenha um bloco semitransparente para manter os textos da HUD legíveis.
 
         Parâmetros:
-            Nenhum (usa `self.screen` e `self.fonte_hud`).
+            superficies (list[pygame.Surface]): Textos já renderizados que compõem o bloco.
+            pos_x (int): Coordenada X de referência (borda esquerda ou direita).
+            pos_y (int): Coordenada Y do topo do bloco.
+            espacamento (int, opcional): Espaço vertical em pixels entre linhas (padrão: 8).
+            alinhar_direita (bool, opcional): Se True, usa `pos_x` como borda direita.
+        """
+        padding_x, padding_y = 14, 10
+        largura_bloco = max(s.get_width() for s in superficies) + 2 * padding_x
+        altura_bloco = (
+            sum(s.get_height() for s in superficies)
+            + espacamento * max(0, len(superficies) - 1)
+            + 2 * padding_y
+        )
+        x_caixa = pos_x - largura_bloco if alinhar_direita else pos_x
+
+        fundo = pg.Surface((largura_bloco, altura_bloco), pg.SRCALPHA)
+        fundo.fill((0, 0, 0, 175))
+        self.screen.blit(fundo, (x_caixa, pos_y))
+
+        cursor_y = pos_y + padding_y
+        for surf in superficies:
+            self.screen.blit(surf, (x_caixa + padding_x, cursor_y))
+            cursor_y += surf.get_height() + espacamento
+
+    def desenhar_hud(self):
+        """Desenha os indicadores separados da HUD (pontos, tarefas, chances e tempo).
+
+        Também reserva o espaço central superior para avisos do chefe e o centro da tela
+        para o painel de pergunta quando ativo.
+
+        Parâmetros:
+            Nenhum (usa `self.screen` e as fontes da HUD).
         """
         concluidas = self.map.total_tarefas - len(self.map.tarefas_pendentes)
+        cor_chances = "red" if self.chances <= 1 else "yellow"
         cor_tempo = "red" if self.tempo_restante <= 10 else "white"
-        linhas = [
-            (f"Rodada: {self.rodada} | Pontos: {self.pontos} | Recorde: {self.recorde}", "white"),
-            (f"Tarefas: {concluidas}/{self.map.total_tarefas} | Chances: {self.chances}/{CHANCES_INICIAIS}", "yellow"),
-            (f"Tempo: {self.tempo_restante:.1f}s", cor_tempo),
+
+        # Bloco esquerdo: rodada, pontuação, recorde, tarefas e chances separados
+        bloco_esquerdo = [
+            self.fonte_hud.render(
+                f"Rodada: {self.rodada}   |   Pontos: {self.pontos}   |   Recorde: {self.recorde}",
+                True,
+                "white",
+            ),
+            self.fonte_hud.render(
+                f"Tarefas: {concluidas}/{self.map.total_tarefas}   |   Chances: {self.chances}/{CHANCES_INICIAIS}",
+                True,
+                cor_chances if self.chances <= 1 else "cyan",
+            ),
         ]
-        for indice, (texto, cor) in enumerate(linhas):
-            surf = self.fonte_hud.render(texto, True, cor)
-            self.screen.blit(surf, (20, 15 + indice * 30))
+        self._desenhar_caixa_hud(bloco_esquerdo, 20, 16)
+
+        # Bloco direito: cronômetro da rodada destacado e separado
+        tempo_surf = self.fonte_hud_destaque.render(
+            f"Tempo: {self.tempo_restante:04.1f}s",
+            True,
+            cor_tempo,
+        )
+        self._desenhar_caixa_hud([tempo_surf], WIDTH - 20, 16, alinhar_direita=True)
+
+        # Espaço previsto para avisos do chefe (abaixo da barra superior) e painel de pergunta
+        if self.aviso_chefe:
+            aviso_surf = self.fonte_hud_destaque.render(self.aviso_chefe, True, "orange")
+            caixa_aviso = pg.Surface(
+                (aviso_surf.get_width() + 28, aviso_surf.get_height() + 16),
+                pg.SRCALPHA,
+            )
+            caixa_aviso.fill((0, 0, 0, 190))
+            rect_aviso = caixa_aviso.get_rect(midtop=(HALF_WIDTH, 115))
+            self.screen.blit(caixa_aviso, rect_aviso)
+            self.screen.blit(aviso_surf, aviso_surf.get_rect(center=rect_aviso.center))
+
+        if self.painel_pergunta is not None:
+            self.desenhar_painel_pergunta()
+
+    def desenhar_painel_pergunta(self):
+        """Desenha o painel central reservado para as perguntas das tarefas.
+
+        Parâmetros:
+            Nenhum (lê `self.painel_pergunta` quando preenchido pelo módulo de missões).
+        """
+        largura_painel, altura_painel = 860, 320
+        painel = pg.Surface((largura_painel, altura_painel), pg.SRCALPHA)
+        painel.fill((15, 15, 25, 230))
+        rect = painel.get_rect(center=(HALF_WIDTH, HALF_HEIGHT))
+        self.screen.blit(painel, rect)
+        pg.draw.rect(self.screen, "white", rect, 2)
+
+        texto = self.fonte_hud.render(str(self.painel_pergunta), True, "white")
+        self.screen.blit(texto, texto.get_rect(center=rect.center))
 
     def desenhar_game_over(self):
         """Desenha a tela de fim de jogo com pontuação final e opção de voltar ao menu.
@@ -189,7 +271,7 @@ class Game:
         """
         self.screen.fill("black")
         titulo = self.fonte_gameover.render("GAME OVER", True, "red")
-        resumo = self.fonte_hud.render(
+        resumo = self.fonte_hud_destaque.render(
             f"Rodada alcançada: {self.rodada} | Pontos: {self.pontos} | Recorde: {self.recorde}",
             True,
             "white",
@@ -199,9 +281,9 @@ class Game:
             True,
             "gray",
         )
-        self.screen.blit(titulo, titulo.get_rect(center=(HALF_WIDTH, HALF_HEIGHT - 80)))
+        self.screen.blit(titulo, titulo.get_rect(center=(HALF_WIDTH, HALF_HEIGHT - 90)))
         self.screen.blit(resumo, resumo.get_rect(center=(HALF_WIDTH, HALF_HEIGHT)))
-        self.screen.blit(instrucao, instrucao.get_rect(center=(HALF_WIDTH, HALF_HEIGHT + 60)))
+        self.screen.blit(instrucao, instrucao.get_rect(center=(HALF_WIDTH, HALF_HEIGHT + 70)))
 
     def draw(self):
         """Desenha a tela atual (menu, guia ou visão 3D) e atualiza o display.
@@ -216,7 +298,9 @@ class Game:
         elif self.estado == "guia":           # NOVO
             self.tela_guia.draw()             # NOVO
         else:
-            self.screen.fill('black')
+            # Teto e carpete do escritório ao fundo da cena 3D
+            self.screen.fill(COR_TETO, (0, 0, WIDTH, HALF_HEIGHT))
+            self.screen.fill(COR_CHAO, (0, HALF_HEIGHT, WIDTH, HALF_HEIGHT))
             self.raycasting.draw()
             self.desenhar_hud()
         pg.display.flip()  # Atualiza a janela apenas após todo o desenho do frame
@@ -235,10 +319,17 @@ class Game:
             pg.K_5: ORDEM_MAPAS[4],
         }
         for event in pg.event.get():
-            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            if event.type == pg.QUIT:
                 self.sair()
-            if self.estado == 'menu':
+            elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+                if self.estado == "guia":
+                    self.tela_guia.voltar()
+                else:
+                    self.sair()
+            elif self.estado == 'menu':
                 self.tela_inicial.tratar_evento(event)
+            elif self.estado == 'guia':
+                self.tela_guia.tratar_evento(event)
             elif self.estado == 'game_over':
                 if event.type == pg.KEYDOWN and event.key in (pg.K_RETURN, pg.K_SPACE):
                     self.estado = "menu"
