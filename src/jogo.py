@@ -3,6 +3,7 @@ import pygame as pg
 
 if __package__:
     from .dados import carregar_recorde, salvar_recorde
+    from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
     from .settings import *
     from .map import *
@@ -12,12 +13,15 @@ if __package__:
     from .raycasting import RayCasting
 else:
     from dados import carregar_recorde, salvar_recorde
+    from ranking import salvar_melhor
+    from .settings import *
     from funcoes import calcular_pontos, jogador_perdeu, tomar_dano
     from map import *
     from player import *
     from tela_inicial import Tela_inicial
     from guia import Guia_jogo           # NOVO
     from raycasting import RayCasting
+
 
 
 class Game:
@@ -50,6 +54,7 @@ class Game:
         self.tempo_restante = TEMPO_INICIAL_RODADA
         self.aviso_chefe = ""
         self.painel_pergunta = None
+        self.nome_jogador = ""  # preenchido pela Tela_inicial ao escolher "Jogar"
         self.tela_guia = Guia_jogo(self)      # NOVO
 
     def new_game(self, nome_mapa="aleatorio"):
@@ -124,7 +129,7 @@ class Game:
             self.trocar_mapa("aleatorio")
 
     def encerrar_partida(self):
-        """Salva o recorde se superado, libera o cursor e entra na tela de Game Over.
+        """Salva o recorde e a melhor pontuação do jogador, libera o cursor e abre o Game Over
 
         Parâmetros:
             Nenhum.
@@ -132,6 +137,8 @@ class Game:
         if self.pontos > self.recorde:
             self.recorde = self.pontos
             salvar_recorde(CAMINHO_RECORDE, self.recorde)
+        # Grava no ranking.txt apenas se for a melhor pontuação deste jogador
+        salvar_melhor(self.nome_jogador, self.pontos)
         self.estado = "game_over"
         pg.event.set_grab(False)
         pg.mouse.set_visible(True)
@@ -324,6 +331,8 @@ class Game:
             elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 if self.estado == "guia":
                     self.tela_guia.voltar()
+                elif self.estado == "menu" and self.tela_inicial.digitando:
+                    self.tela_inicial.digitando = False  # ESC cancela só a edição do nome
                 else:
                     self.sair()
             elif self.estado == 'menu':
