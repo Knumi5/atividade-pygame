@@ -298,3 +298,58 @@ def test_menu_preserva_entrada_de_nome_de_fernando(game):
     tecla(game, pg.K_RETURN)
     assert game.estado == "jogando"
     assert game.nome_jogador == "Ricardo"
+
+
+def test_timeout_fora_do_painel_preserva_comportamento_existente(game):
+    game.tempo_restante = 0.001
+    game.delta_time = 100
+    game.pontos = 2
+    game.update()
+    assert game.chances == CHANCES_INICIAIS - 1
+    assert game.rodada == 1
+    assert game.pontos == 2
+    assert game.tempo_restante == game.tempo_limite_rodada
+    assert len(game.map.tarefas_pendentes) == TAREFAS_POR_RODADA
+
+
+def test_timeout_na_ultima_chance_encerra_partida(game):
+    game.chances = 1
+    game.tempo_restante = 0.001
+    game.delta_time = 100
+    game.update()
+    assert game.estado == "game_over"
+    assert game.chances == 0
+
+
+def test_pergunta_aberta_impede_abrir_outro_terminal(game, terminal):
+    painel = abrir(game, terminal)
+    outro = next(pos for pos in game.map.tarefas_pendentes if pos != terminal)
+    assert game.abrir_pergunta(outro) is False
+    assert game.painel_pergunta is painel
+
+
+def test_resposta_larga_fica_dentro_do_campo(game, terminal):
+    from src.tarefas import LIMITE_RESPOSTA
+
+    abrir(game, terminal)
+    game.painel_pergunta["digitado"] = "W" * LIMITE_RESPOSTA
+    larguras = []
+
+    class FonteObservada:
+        def __init__(self, fonte):
+            self.fonte = fonte
+
+        def render(self, texto, *args):
+            surf = self.fonte.render(texto, *args)
+            if texto.startswith("> "):
+                larguras.append(surf.get_width())
+            return surf
+
+        def __getattr__(self, nome):
+            return getattr(self.fonte, nome)
+
+    game.fonte_hud = FonteObservada(game.fonte_hud)
+    game.desenhar_painel_pergunta()
+    assert larguras
+    assert max(larguras) <= 860 - 64 - 24
+    assert len(game.painel_pergunta["digitado"]) == LIMITE_RESPOSTA

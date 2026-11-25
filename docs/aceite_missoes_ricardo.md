@@ -52,3 +52,48 @@ Fase vermelha, antes de alterar `src/`: **35 falhas e 2 aprovações** em
 `python -m pytest -q`. As falhas incluem conclusão automática ao interagir,
 ausência do banco de perguntas e ausência do fluxo de resposta/cancelamento.
 Implementação ainda não validada nesta etapa.
+
+### Validação final
+
+- Banco de perguntas e regras: **13 testes aprovados**.
+- Integração, eventos e regressões: **28 testes aprovados**.
+- Resultado completo: **41 aprovados, nenhuma falha** em `python -m pytest -q`.
+- A revisão adicional encontrou uma resposta larga ultrapassando o campo
+  (40 letras W). O teste reproduziu o problema; o campo passou a acompanhar
+  o cursor sem perder o texto e a regressão passou.
+- `git diff --check`, compilação dos módulos e importação direta de
+  `src/jogo.py` também foram verificados.
+- Renderização revisada: pergunta, envio vazio, resposta larga e retorno após
+  erro, na janela de 1600 x 900.
+
+| Critérios | Resultado |
+| --- | --- |
+| CA01 a CA08 | Aprovados nos testes de eventos, regras e estado. |
+| CA09 | Aprovado nos contadores de resolvidas/acertos e revisão da HUD. |
+| CA10 a CA12 | Aprovados nos testes de rodada, derrota, persistência e reinício. |
+| CA13 | Aprovado na captura dos textos desenhados e revisão visual do painel. |
+| CA14 | Aprovado nos eventos de saída e regressão da entrada de nome do menu. |
+
+Ambiente: Python 3.12, Pygame 2.6.1, Linux com vídeo e áudio SDL `dummy`.
+Os testes de interface usam eventos e superfícies reais do Pygame, sem uma
+janela interativa. Teclado/mouse físicos e desempenho na máquina de
+apresentação continuam fazendo parte da validação presencial da equipe.
+
+## Como usar e integrar
+
+- Durante a exploração: E ou Mouse 1 abre o terminal próximo.
+- No painel: digitar, Backspace para apagar, Enter para confirmar e ESC
+  para cancelar. Enviar vazio pede uma resposta, sem desconto de chance.
+- Acerto: +1 ponto e terminal verde. Erro: -1 chance e terminal vermelho.
+  Ambos retiram o terminal das pendências, mas somente o acerto aumenta o
+  contador de acertos. Nenhum resultado é aplicado duas vezes.
+- O tempo fica pausado enquanto `game.em_tarefa` for verdadeiro. A mesma
+  propriedade é o contrato para o futuro módulo do chefe.
+- `game.perder_chance(quantidade, reiniciar_rodada=False)` preserva a rodada
+  numa penalidade. O tempo esgotado mantém o comportamento padrão de
+  reiniciar a tentativa enquanto houver chances.
+- O banco em `src/tarefas.py` é independente do Pygame. A pergunta de cada
+  terminal fica estável até o mapa/rodada mudar.
+- A implementação do chefe, texturas, música e jumpscare permanece na etapa
+  seguinte do Gantt. A tela de consulta ao ranking também permanece com seus
+  responsáveis; o nome e a gravação existentes foram preservados.
