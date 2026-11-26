@@ -74,32 +74,41 @@ class RayCasting:
                 y_vert += passo_y
                 profundidade_vertical += passo_profundidade
 
-            # Escolhe a interseção mais próxima do jogador, o tipo do bloco e o sombreamento da face
+            # Escolhe a interseção mais próxima do jogador, o tipo do bloco, o offset e a face
             if profundidade_vertical < profundidade_horizontal:
                 profundidade = profundidade_vertical
                 bloco_tipo = textura_vertical
                 fator_face = 1.0
+                y_vert %= 1
+                offset = y_vert if cosseno_a > 0 else (1 - y_vert)
             else:
                 profundidade = profundidade_horizontal
                 bloco_tipo = textura_horizontal
                 fator_face = 0.85  # Escurece levemente faces horizontais para destacar quinas
+                x_hor %= 1
+                offset = (1 - x_hor) if seno_a > 0 else x_hor
+
+            # Garante offset dentro de [0, 1) para recortar a textura sem estourar bordas
+            offset = max(0.0, min(0.9999, offset))
 
             # Corrige o efeito olho de peixe (distorção nas bordas do FOV)
             profundidade *= math.cos(self.game.player.angle - angulo_raio)
 
             # Converte a distância da parede em altura em pixels na tela
             altura_projetada = SCREEN_DIST / (profundidade + 0.0001)
-            self.ray_casting_result.append((raio, profundidade, altura_projetada, bloco_tipo, fator_face))
+            self.ray_casting_result.append(
+                (raio, profundidade, altura_projetada, bloco_tipo, offset, fator_face)
+            )
 
             angulo_raio += DELTA_ANGLE
 
     def draw(self):
-        """Desenha as colunas 3D na tela diferenciando paredes bege e terminais de tarefa.
+        """Desenha as colunas 3D em cor sólida (fallback caso ObjectRenderer não seja usado).
 
         Parâmetros:
             Nenhum (usa os resultados salvos em `self.ray_casting_result` e `self.game.screen`).
         """
-        for raio, profundidade, altura_projetada, bloco_tipo, fator_face in self.ray_casting_result:
+        for raio, profundidade, altura_projetada, bloco_tipo, _offset, fator_face in self.ray_casting_result:
             # Quanto maior a distância, mais escura fica a parede
             sombra = (1 / (1 + max(profundidade, 0) ** 5 * 0.00002)) * fator_face
             if bloco_tipo == 2:

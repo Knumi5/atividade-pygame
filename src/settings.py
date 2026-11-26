@@ -49,3 +49,8 @@ COR_TAREFA_CONCLUIDA = (0, 220, 100)     # Terminal verde
 # Caminhos absolutos para arquivos persistentes e recursos
 CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
 CAMINHO_SPRITES = str(BASE_DIR / "assets" / "imagens" / "spritesheet.bmp")
+CAMINHO_TEXTURAS = BASE_DIR / "assets" / "imagens" / "texturas"
+
+# Dimensões padrão das texturas de parede (em pixels)
+TEXTURE_SIZE = 256
+HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2

@@ -10,16 +10,18 @@ if __package__:
     from .player import *
     from .tela_inicial import Tela_inicial
     from .guia import Guia_jogo          # NOVO
+    from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
 else:
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
-    from .settings import *
+    from settings import *
     from funcoes import calcular_pontos, jogador_perdeu, tomar_dano
     from map import *
     from player import *
     from tela_inicial import Tela_inicial
     from guia import Guia_jogo           # NOVO
+    from object_renderer import ObjectRenderer
     from raycasting import RayCasting
 
 
@@ -90,6 +92,7 @@ class Game:
             self.map.carregar_mapa(nome_mapa, qtd_tarefas=TAREFAS_POR_RODADA)
 
         self.player = Player(self)
+        self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):
@@ -305,10 +308,7 @@ class Game:
         elif self.estado == "guia":           # NOVO
             self.tela_guia.draw()             # NOVO
         else:
-            # Teto e carpete do escritório ao fundo da cena 3D
-            self.screen.fill(COR_TETO, (0, 0, WIDTH, HALF_HEIGHT))
-            self.screen.fill(COR_CHAO, (0, HALF_HEIGHT, WIDTH, HALF_HEIGHT))
-            self.raycasting.draw()
+            self.object_renderer.draw()
             self.desenhar_hud()
         pg.display.flip()  # Atualiza a janela apenas após todo o desenho do frame
 
