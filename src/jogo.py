@@ -143,7 +143,10 @@ class Game:
             return False
         self.tempo_boss += segundos
         if confirma_tempo(self.tempo_boss, self.boss_ativo):
-            return self.criar_boss()
+            criou = self.criar_boss()
+            if criou:
+                self.aviso_chefe = "O chefe apareceu!"
+            return criou
         return False
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):

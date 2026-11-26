@@ -26,3 +26,10 @@ Quando houver autorização, chamar spawn_boss e guardar o retorno no Game.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria tests/test_spawn_boss.py::test_criacao_guarda_os_dados_e_ativa_chefe`.
 - Resultado: 5 passed in 0.23s.
+
+## Q04-EX03
+
+Somente após uma criação válida, atualizar boss_ativo e usar aviso_chefe para informar a aparição na HUD.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_aparicao_valida_exibe_aviso tests/test_encontros_boss.py::test_sem_espaco_tenta_novamente_sem_ativar`.
+- Resultado: 2 passed in 0.15s.

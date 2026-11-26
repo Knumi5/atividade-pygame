@@ -33,7 +33,7 @@ tags: [pygame, ricardo, quarta, execucao]
 ## Executar
 - [x] No bloco existente de contagem, consultar confirma_tempo usando o contador e o estado que você já criou. <!-- Q04-EX01 -->
 - [x] Quando houver autorização, chamar spawn_boss e guardar o retorno no Game. <!-- Q04-EX02 -->
-- [ ] Somente após uma criação válida, atualizar boss_ativo e usar aviso_chefe para informar a aparição na HUD. <!-- Q04-EX03 -->
+- [x] Somente após uma criação válida, atualizar boss_ativo e usar aviso_chefe para informar a aparição na HUD. <!-- Q04-EX03 -->
 
 > [!tip] Para raciocinar
 > A função confirma_tempo responde uma pergunta. O update usa essa resposta para decidir quando executar a ação.
