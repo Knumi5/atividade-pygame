@@ -27,7 +27,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] Antes de 30 segundos de jogo ativo, nenhum chefe é criado. <!-- Q04-CA01 -->
 - [x] Ao atingir ou ultrapassar 30 segundos, uma única criação válida acontece. <!-- Q04-CA02 -->
 - [x] Com boss_ativo verdadeiro, novos quadros não criam outro chefe. <!-- Q04-CA03 -->
-- [ ] Se a criação falhar, boss_ativo continua falso. <!-- Q04-CA04 -->
+- [x] Se a criação falhar, boss_ativo continua falso. <!-- Q04-CA04 -->
 - [ ] O tempo de espera permanece parado com uma pergunta aberta e fora da partida. <!-- Q04-CA05 -->
 
 ## Executar

@@ -54,3 +54,10 @@ Com boss_ativo verdadeiro, novos quadros não criam outro chefe.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe`.
 - Resultado: 1 passed in 0.12s.
+
+## Q04-CA04
+
+Se a criação falhar, boss_ativo continua falso.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_sem_espaco_tenta_novamente_sem_ativar`.
+- Resultado: 1 passed in 0.08s.
