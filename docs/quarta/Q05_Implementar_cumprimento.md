@@ -24,7 +24,7 @@ tags: [pygame, ricardo, quarta, execucao]
 > O jogo ainda não possui um fluxo de cumprimento do chefe.
 
 ## Critérios de aceite
-- [ ] Um cumprimento só é aceito quando há chefe ativo e o jogador está dentro do alcance combinado. <!-- Q05-CA01 -->
+- [x] Um cumprimento só é aceito quando há chefe ativo e o jogador está dentro do alcance combinado. <!-- Q05-CA01 -->
 - [ ] Cumprir dentro do prazo encerra o encontro sem penalidade. <!-- Q05-CA02 -->
 - [ ] Uma interação fora do alcance não encerra o encontro. <!-- Q05-CA03 -->
 - [ ] Uma mesma entrada não conclui simultaneamente um terminal e o cumprimento. <!-- Q05-CA04 -->

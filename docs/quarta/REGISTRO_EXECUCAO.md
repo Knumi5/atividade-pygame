@@ -89,3 +89,10 @@ Ao cumprir corretamente, encerrar o encontro e preparar a espera pela próxima a
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_encerrar_rearma_espera_completa tests/test_encontros_boss.py::test_tecla_repetida_nao_resolve_outro_encontro`.
 - Resultado: 2 passed in 0.15s.
+
+## Q05-CA01
+
+Um cumprimento só é aceito quando há chefe ativo e o jogador está dentro do alcance combinado.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance tests/test_encontros_boss.py::test_sem_chefe_cumprimento_nao_tem_efeito`.
+- Resultado: 5 passed in 0.26s.
