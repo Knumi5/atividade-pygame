@@ -40,3 +40,10 @@ Antes de 30 segundos de jogo ativo, nenhum chefe é criado.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria`.
 - Resultado: 3 passed in 0.15s.
+
+## Q04-CA02
+
+Ao atingir ou ultrapassar 30 segundos, uma única criação válida acontece.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
+- Resultado: 4 passed in 0.23s.
