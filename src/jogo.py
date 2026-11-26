@@ -2,7 +2,7 @@ import sys
 import pygame as pg
 
 if __package__:
-    from .boss import temporizador
+    from .boss import confirma_tempo
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -14,7 +14,7 @@ if __package__:
     from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
 else:
-    from boss import temporizador
+    from boss import confirma_tempo
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from settings import *
@@ -76,7 +76,7 @@ class Game:
         self.pontos = 0
         self.recorde = carregar_recorde(CAMINHO_RECORDE)
         self.map = None
-        self,tempo_boss  = 0.0
+        self.tempo_boss = 0.0
         self.boss_ativo = False 
         self.iniciar_rodada(nome_mapa)
 
