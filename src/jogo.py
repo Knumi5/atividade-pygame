@@ -135,6 +135,15 @@ class Game:
         self.boss_ativo = True
         return True
 
+    def atualizar_boss(self, segundos):
+        """Conta apenas o tempo de jogo ativo e consulta a regra de aparição."""
+        if self.estado != "jogando" or self.painel_pergunta is not None:
+            return False
+        if self.boss_ativo:
+            return False
+        self.tempo_boss += segundos
+        return confirma_tempo(self.tempo_boss, self.boss_ativo)
+
     def iniciar_jogo(self, nome_mapa="aleatorio"):
         """Inicia uma partida a partir do menu e ativa o controle de câmera pelo mouse.
 
@@ -203,14 +212,14 @@ class Game:
         Parâmetros:
             Nenhum.
         """
-        if self.estado == "jogando":
+        if self.estado == "jogando" and self.painel_pergunta is None:
             self.player.update()
             self.raycasting.update()
-            if self.painel_pergunta is None: 
-                self.tempo_boss += self.delta_time / 1000.0
             self.tempo_restante = max(0.0, self.tempo_restante - self.delta_time / 1000.0)
             if self.tempo_restante <= 0:
                 self.perder_chance(1)
+            else:
+                self.atualizar_boss(self.delta_time / 1000.0)
             titulo_janela = (
                 f'Rodada {self.rodada} ({self.map.nome_exibicao}) '
                 f'| FPS: {self.clock.get_fps():.1f}'

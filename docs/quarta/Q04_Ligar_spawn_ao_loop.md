@@ -31,7 +31,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [ ] O tempo de espera permanece parado com uma pergunta aberta e fora da partida. <!-- Q04-CA05 -->
 
 ## Executar
-- [ ] No bloco existente de contagem, consultar confirma_tempo usando o contador e o estado que você já criou. <!-- Q04-EX01 -->
+- [x] No bloco existente de contagem, consultar confirma_tempo usando o contador e o estado que você já criou. <!-- Q04-EX01 -->
 - [ ] Quando houver autorização, chamar spawn_boss e guardar o retorno no Game. <!-- Q04-EX02 -->
 - [ ] Somente após uma criação válida, atualizar boss_ativo e usar aviso_chefe para informar a aparição na HUD. <!-- Q04-EX03 -->
 

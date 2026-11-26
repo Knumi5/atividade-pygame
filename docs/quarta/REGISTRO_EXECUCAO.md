@@ -12,3 +12,10 @@ Preparar os cenários da lista antes da execução e testar os limites de tempo 
 
 - Verificação: `python -m pytest -q --tb=no (fase vermelha antes da implementação)`.
 - Resultado: Fase vermelha reproduzida: 36 falhas e 33 aprovações, antes de alterar src/.
+
+## Q04-EX01
+
+No bloco existente de contagem, consultar confirma_tempo usando o contador e o estado que você já criou.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_update_consulta_regra_de_autorizacao tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria tests/test_encontros_boss.py::test_fora_da_partida_nao_conta_nem_cria`.
+- Resultado: 7 passed in 0.35s.
