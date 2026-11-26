@@ -1,5 +1,6 @@
 import sys
 import random
+import math
 import pygame as pg
 
 if __package__:
@@ -64,6 +65,7 @@ class Game:
         self.tempo_boss  = 0.0
         self.boss_ativo = False
         self.boss = None
+        self.tempo_cumprimento_boss = 0.0
     
 
     def new_game(self, nome_mapa="aleatorio"):
@@ -82,6 +84,7 @@ class Game:
         self.boss_ativo = False 
         self.boss = None
         self.aviso_chefe = ""
+        self.tempo_cumprimento_boss = 0.0
         self.iniciar_rodada(nome_mapa)
 
     def iniciar_rodada(self, nome_mapa="aleatorio"):
@@ -133,6 +136,43 @@ class Game:
 
         self.boss = spawn_boss(posicao)
         self.boss_ativo = True
+        self.tempo_cumprimento_boss = PRAZO_CUMPRIMENTO_BOSS
+        self.atualizar_aviso_boss()
+        return True
+
+    def atualizar_aviso_boss(self):
+        """Mostra o comando e o prazo restantes do encontro ativo."""
+        if not self.boss_ativo:
+            self.aviso_chefe = ""
+            return
+        tecla = pg.key.name(TECLA_CUMPRIMENTO_BOSS).upper()
+        self.aviso_chefe = (
+            f"Chefe: {tecla} para cumprimentar | "
+            f"{self.tempo_cumprimento_boss:.1f}s"
+        )
+
+    def encerrar_encontro_boss(self):
+        """Resolve o encontro e rearma os 30 segundos de espera."""
+        if self.boss is not None:
+            self.boss["ativo"] = False
+        self.boss = None
+        self.boss_ativo = False
+        self.tempo_cumprimento_boss = 0.0
+        self.tempo_boss = 0.0
+        self.aviso_chefe = ""
+
+    def cumprimentar_boss(self):
+        """Aceita o cumprimento somente durante um encontro válido e próximo."""
+        if (self.estado != "jogando" or self.painel_pergunta is not None
+                or not self.boss_ativo or self.boss is None
+                or self.tempo_cumprimento_boss <= 0):
+            return False
+        distancia = math.hypot(
+            self.player.x - self.boss["x"], self.player.y - self.boss["y"]
+        )
+        if distancia > ALCANCE_CUMPRIMENTO_BOSS + 1e-9:
+            return False
+        self.encerrar_encontro_boss()
         return True
 
     def atualizar_boss(self, segundos):
@@ -143,10 +183,7 @@ class Game:
             return False
         self.tempo_boss += segundos
         if confirma_tempo(self.tempo_boss, self.boss_ativo):
-            criou = self.criar_boss()
-            if criou:
-                self.aviso_chefe = "O chefe apareceu!"
-            return criou
+            return self.criar_boss()
         return False
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):

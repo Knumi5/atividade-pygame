@@ -31,7 +31,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [ ] Depois do encontro, o aviso e a presença do chefe são limpos e o próximo ciclo é rearmado conforme a regra combinada. <!-- Q05-CA05 -->
 
 ## Executar
-- [ ] Aplicar a tecla e o alcance anotados por você na primeira etapa de quarta. <!-- Q05-EX01 -->
+- [x] Aplicar a tecla e o alcance anotados por você na primeira etapa de quarta. <!-- Q05-EX01 -->
 - [ ] Conectar a detecção do cumprimento ao tratamento de eventos, respeitando a interação já existente com terminais. <!-- Q05-EX02 -->
 - [ ] Ao cumprir corretamente, encerrar o encontro e preparar a espera pela próxima aparição. <!-- Q05-EX03 -->
 
