@@ -75,3 +75,10 @@ Aplicar a tecla e o alcance anotados por você na primeira etapa de quarta.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_regras_confirmadas_pelo_usuario tests/test_encontros_boss.py::test_cumprimento_respeita_alcance tests/test_encontros_boss.py::test_sem_chefe_cumprimento_nao_tem_efeito`.
 - Resultado: 6 passed in 0.29s.
+
+## Q05-EX02
+
+Conectar a detecção do cumprimento ao tratamento de eventos, respeitando a interação já existente com terminais.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal tests/test_encontros_boss.py::test_mesma_tecla_nao_cumprimenta_e_resolve_terminal tests/test_encontros_boss.py::test_outra_tecla_nao_cumprimenta`.
+- Resultado: 3 passed in 0.19s.

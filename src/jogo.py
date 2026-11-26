@@ -436,6 +436,9 @@ class Game:
                 if event.type == pg.KEYDOWN and event.key in (pg.K_RETURN, pg.K_SPACE):
                     self.estado = "menu"
             elif self.estado == 'jogando':
+                if (event.type == pg.KEYDOWN and event.key == TECLA_CUMPRIMENTO_BOSS
+                        and self.cumprimentar_boss()):
+                    continue  # O evento de cumprimento já foi consumido.
                 interagiu = (
                     (event.type == pg.MOUSEBUTTONDOWN and event.button == 1)
                     or (event.type == pg.KEYDOWN and event.key == pg.K_e)
