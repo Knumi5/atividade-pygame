@@ -82,3 +82,10 @@ Conectar a detecção do cumprimento ao tratamento de eventos, respeitando a int
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal tests/test_encontros_boss.py::test_mesma_tecla_nao_cumprimenta_e_resolve_terminal tests/test_encontros_boss.py::test_outra_tecla_nao_cumprimenta`.
 - Resultado: 3 passed in 0.19s.
+
+## Q05-EX03
+
+Ao cumprir corretamente, encerrar o encontro e preparar a espera pela próxima aparição.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_encerrar_rearma_espera_completa tests/test_encontros_boss.py::test_tecla_repetida_nao_resolve_outro_encontro`.
+- Resultado: 2 passed in 0.15s.

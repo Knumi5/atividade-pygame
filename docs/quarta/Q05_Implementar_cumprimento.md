@@ -33,7 +33,7 @@ tags: [pygame, ricardo, quarta, execucao]
 ## Executar
 - [x] Aplicar a tecla e o alcance anotados por você na primeira etapa de quarta. <!-- Q05-EX01 -->
 - [x] Conectar a detecção do cumprimento ao tratamento de eventos, respeitando a interação já existente com terminais. <!-- Q05-EX02 -->
-- [ ] Ao cumprir corretamente, encerrar o encontro e preparar a espera pela próxima aparição. <!-- Q05-EX03 -->
+- [x] Ao cumprir corretamente, encerrar o encontro e preparar a espera pela próxima aparição. <!-- Q05-EX03 -->
 
 > [!tip] Para raciocinar
 > Separe três verificações: existe chefe, o jogador está perto e a entrada corresponde ao cumprimento combinado.
