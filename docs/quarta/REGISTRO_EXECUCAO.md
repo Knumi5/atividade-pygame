@@ -96,3 +96,10 @@ Um cumprimento só é aceito quando há chefe ativo e o jogador está dentro do 
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance tests/test_encontros_boss.py::test_sem_chefe_cumprimento_nao_tem_efeito`.
 - Resultado: 5 passed in 0.26s.
+
+## Q05-CA02
+
+Cumprir dentro do prazo encerra o encontro sem penalidade.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
+- Resultado: 1 passed in 0.08s.
