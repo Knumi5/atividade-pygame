@@ -13,8 +13,11 @@ OBS: pass permite que eu teste funções isoladas sem precisar implementar ainda
 
 import pygame as pg
 import random
+
+
+
 # Define se o boss pode ou nao ser spawnado
-def temporizador(tempo, boss): 
+def confirma_tempo(tempo, boss): 
     if  tempo >= 30 and boss == False:
         return True
     else: 
@@ -32,5 +35,3 @@ def localizar_jogador():
 def locomoção_boss():
     pass
 
-print(temporizador(31, False))  # Deve mostrar True
-print(temporizador(31, True))   # Deve mostrar False

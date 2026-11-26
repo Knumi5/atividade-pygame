@@ -2,6 +2,7 @@ import sys
 import pygame as pg
 
 if __package__:
+    from .boss import temporizador
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -12,6 +13,7 @@ if __package__:
     from .guia import Guia_jogo          # NOVO
     from .raycasting import RayCasting
 else:
+    from boss import temporizador
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from .settings import *
@@ -69,6 +71,8 @@ class Game:
         self.pontos = 0
         self.recorde = carregar_recorde(CAMINHO_RECORDE)
         self.map = None
+        self,tempo_boss  = 0.0
+        self.boss_ativo = False 
         self.iniciar_rodada(nome_mapa)
 
     def iniciar_rodada(self, nome_mapa="aleatorio"):
@@ -163,6 +167,8 @@ class Game:
         if self.estado == "jogando":
             self.player.update()
             self.raycasting.update()
+            if self.painel_pergunta is None: 
+                self.tempo_boss += self.delta_time / 1000.0
             self.tempo_restante = max(0.0, self.tempo_restante - self.delta_time / 1000.0)
             if self.tempo_restante <= 0:
                 self.perder_chance(1)
