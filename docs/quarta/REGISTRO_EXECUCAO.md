@@ -124,3 +124,10 @@ Depois do encontro, o aviso e a presença do chefe são limpos e o próximo cicl
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_encerrar_rearma_espera_completa tests/test_encontros_boss.py::test_tecla_repetida_nao_resolve_outro_encontro`.
 - Resultado: 2 passed in 0.12s.
+
+## Q06-EX01
+
+Representar o prazo do encontro separadamente do intervalo de 30 segundos e do tempo restante da rodada.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_comeca_na_criacao_e_tem_contador_proprio tests/test_encontros_boss.py::test_prazo_so_comeca_quando_ha_posicao_valida tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
+- Resultado: 3 passed in 0.22s.

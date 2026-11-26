@@ -220,6 +220,12 @@ def test_encerrar_rearma_espera_completa(encontro):
 def test_prazo_comeca_na_criacao_e_tem_contador_proprio(encontro):
     aparecer(encontro)
     assert encontro.tempo_cumprimento_boss == 5.0
+    assert encontro.tempo_boss == 30.0
+    assert encontro.tempo_restante == 970.0
+
+
+def test_prazo_decrementa_sem_mudar_contador_de_espera(encontro):
+    aparecer(encontro)
     espera = encontro.tempo_boss
     rodada = encontro.tempo_restante
     avancar(encontro, 1.5)
