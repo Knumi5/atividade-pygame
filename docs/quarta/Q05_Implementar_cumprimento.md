@@ -4,7 +4,7 @@ projeto: atividade-pygame
 responsavel: Ricardo
 atividade: "R05"
 prioridade: P1
-status: pendente
+status: concluido
 estimativa_min: 20
 ordem: 5
 dia_do_plano: "2026-11-25"
@@ -28,7 +28,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] Cumprir dentro do prazo encerra o encontro sem penalidade. <!-- Q05-CA02 -->
 - [x] Uma interação fora do alcance não encerra o encontro. <!-- Q05-CA03 -->
 - [x] Uma mesma entrada não conclui simultaneamente um terminal e o cumprimento. <!-- Q05-CA04 -->
-- [ ] Depois do encontro, o aviso e a presença do chefe são limpos e o próximo ciclo é rearmado conforme a regra combinada. <!-- Q05-CA05 -->
+- [x] Depois do encontro, o aviso e a presença do chefe são limpos e o próximo ciclo é rearmado conforme a regra combinada. <!-- Q05-CA05 -->
 
 ## Executar
 - [x] Aplicar a tecla e o alcance anotados por você na primeira etapa de quarta. <!-- Q05-EX01 -->

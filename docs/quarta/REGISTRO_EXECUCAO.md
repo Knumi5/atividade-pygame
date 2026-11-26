@@ -117,3 +117,10 @@ Uma mesma entrada não conclui simultaneamente um terminal e o cumprimento.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal tests/test_encontros_boss.py::test_mesma_tecla_nao_cumprimenta_e_resolve_terminal`.
 - Resultado: 2 passed in 0.11s.
+
+## Q05-CA05
+
+Depois do encontro, o aviso e a presença do chefe são limpos e o próximo ciclo é rearmado conforme a regra combinada.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_encerrar_rearma_espera_completa tests/test_encontros_boss.py::test_tecla_repetida_nao_resolve_outro_encontro`.
+- Resultado: 2 passed in 0.12s.
