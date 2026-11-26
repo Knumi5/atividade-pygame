@@ -145,3 +145,10 @@ Encerrar ou marcar o encontro como resolvido antes que os quadros seguintes poss
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over`.
 - Resultado: 2 passed in 0.22s.
+
+## Q06-CA01
+
+O prazo de cumprimento usa o valor que você já definiu na primeira etapa de quarta.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_regras_confirmadas_pelo_usuario tests/test_encontros_boss.py::test_prazo_comeca_na_criacao_e_tem_contador_proprio`.
+- Resultado: 2 passed in 0.09s.
