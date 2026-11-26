@@ -4,7 +4,7 @@ projeto: atividade-pygame
 responsavel: Ricardo
 atividade: "R05"
 prioridade: P1
-status: pendente
+status: concluido
 estimativa_min: 20
 ordem: 6
 dia_do_plano: "2026-11-25"
@@ -28,7 +28,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] O prazo começa na aparição válida e deixa de produzir punição após um cumprimento aceito. <!-- Q06-CA02 -->
 - [x] Ao vencer o prazo, a penalidade combinada é aplicada uma única vez, mesmo com vários quadros seguintes. <!-- Q06-CA03 -->
 - [x] O encontro vencido é encerrado e não dispara repetidamente a mesma penalidade. <!-- Q06-CA04 -->
-- [ ] Se a penalidade zerar as chances, a partida segue para o Game Over existente. <!-- Q06-CA05 -->
+- [x] Se a penalidade zerar as chances, a partida segue para o Game Over existente. <!-- Q06-CA05 -->
 
 ## Executar
 - [x] Representar o prazo do encontro separadamente do intervalo de 30 segundos e do tempo restante da rodada. <!-- Q06-EX01 -->

@@ -173,3 +173,10 @@ O encontro vencido é encerrado e não dispara repetidamente a mesma penalidade.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over`.
 - Resultado: 2 passed in 0.18s.
+
+## Q06-CA05
+
+Se a penalidade zerar as chances, a partida segue para o Game Over existente.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_penalidade_com_ultima_chance_salva_ranking_e_game_over`.
+- Resultado: 1 passed in 0.08s.
