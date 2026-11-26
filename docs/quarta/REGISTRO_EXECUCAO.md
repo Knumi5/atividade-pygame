@@ -33,3 +33,10 @@ Somente após uma criação válida, atualizar boss_ativo e usar aviso_chefe par
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_aparicao_valida_exibe_aviso tests/test_encontros_boss.py::test_sem_espaco_tenta_novamente_sem_ativar`.
 - Resultado: 2 passed in 0.15s.
+
+## Q04-CA01
+
+Antes de 30 segundos de jogo ativo, nenhum chefe é criado.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria`.
+- Resultado: 3 passed in 0.15s.

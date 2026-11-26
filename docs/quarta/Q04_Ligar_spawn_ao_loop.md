@@ -24,7 +24,7 @@ tags: [pygame, ricardo, quarta, execucao]
 > O update já soma tempo_boss, mas ainda não consulta confirma_tempo nem chama spawn_boss.
 
 ## Critérios de aceite
-- [ ] Antes de 30 segundos de jogo ativo, nenhum chefe é criado. <!-- Q04-CA01 -->
+- [x] Antes de 30 segundos de jogo ativo, nenhum chefe é criado. <!-- Q04-CA01 -->
 - [ ] Ao atingir ou ultrapassar 30 segundos, uma única criação válida acontece. <!-- Q04-CA02 -->
 - [ ] Com boss_ativo verdadeiro, novos quadros não criam outro chefe. <!-- Q04-CA03 -->
 - [ ] Se a criação falhar, boss_ativo continua falso. <!-- Q04-CA04 -->
