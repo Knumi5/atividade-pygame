@@ -4,7 +4,7 @@ projeto: atividade-pygame
 responsavel: Ricardo
 atividade: "R04"
 prioridade: P1
-status: pendente
+status: concluido
 estimativa_min: 10
 ordem: 4
 dia_do_plano: "2026-11-25"
@@ -28,7 +28,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] Ao atingir ou ultrapassar 30 segundos, uma única criação válida acontece. <!-- Q04-CA02 -->
 - [x] Com boss_ativo verdadeiro, novos quadros não criam outro chefe. <!-- Q04-CA03 -->
 - [x] Se a criação falhar, boss_ativo continua falso. <!-- Q04-CA04 -->
-- [ ] O tempo de espera permanece parado com uma pergunta aberta e fora da partida. <!-- Q04-CA05 -->
+- [x] O tempo de espera permanece parado com uma pergunta aberta e fora da partida. <!-- Q04-CA05 -->
 
 ## Executar
 - [x] No bloco existente de contagem, consultar confirma_tempo usando o contador e o estado que você já criou. <!-- Q04-EX01 -->

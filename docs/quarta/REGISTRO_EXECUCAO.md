@@ -61,3 +61,10 @@ Se a criação falhar, boss_ativo continua falso.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_sem_espaco_tenta_novamente_sem_ativar`.
 - Resultado: 1 passed in 0.08s.
+
+## Q04-CA05
+
+O tempo de espera permanece parado com uma pergunta aberta e fora da partida.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_fora_da_partida_nao_conta_nem_cria tests/test_encontros_boss.py::test_pergunta_pausa_espera_e_retorno_nao_acumula_punicao`.
+- Resultado: 4 passed in 0.18s.
