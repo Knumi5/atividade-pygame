@@ -103,3 +103,10 @@ Cumprir dentro do prazo encerra o encontro sem penalidade.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
 - Resultado: 1 passed in 0.08s.
+
+## Q05-CA03
+
+Uma interação fora do alcance não encerra o encontro.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance`.
+- Resultado: 4 passed in 0.20s.

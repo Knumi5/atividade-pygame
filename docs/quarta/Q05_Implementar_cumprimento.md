@@ -26,7 +26,7 @@ tags: [pygame, ricardo, quarta, execucao]
 ## Critérios de aceite
 - [x] Um cumprimento só é aceito quando há chefe ativo e o jogador está dentro do alcance combinado. <!-- Q05-CA01 -->
 - [x] Cumprir dentro do prazo encerra o encontro sem penalidade. <!-- Q05-CA02 -->
-- [ ] Uma interação fora do alcance não encerra o encontro. <!-- Q05-CA03 -->
+- [x] Uma interação fora do alcance não encerra o encontro. <!-- Q05-CA03 -->
 - [ ] Uma mesma entrada não conclui simultaneamente um terminal e o cumprimento. <!-- Q05-CA04 -->
 - [ ] Depois do encontro, o aviso e a presença do chefe são limpos e o próximo ciclo é rearmado conforme a regra combinada. <!-- Q05-CA05 -->
 
