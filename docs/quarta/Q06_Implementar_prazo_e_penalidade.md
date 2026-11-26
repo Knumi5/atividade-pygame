@@ -27,7 +27,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] O prazo de cumprimento usa o valor que você já definiu na primeira etapa de quarta. <!-- Q06-CA01 -->
 - [x] O prazo começa na aparição válida e deixa de produzir punição após um cumprimento aceito. <!-- Q06-CA02 -->
 - [x] Ao vencer o prazo, a penalidade combinada é aplicada uma única vez, mesmo com vários quadros seguintes. <!-- Q06-CA03 -->
-- [ ] O encontro vencido é encerrado e não dispara repetidamente a mesma penalidade. <!-- Q06-CA04 -->
+- [x] O encontro vencido é encerrado e não dispara repetidamente a mesma penalidade. <!-- Q06-CA04 -->
 - [ ] Se a penalidade zerar as chances, a partida segue para o Game Over existente. <!-- Q06-CA05 -->
 
 ## Executar

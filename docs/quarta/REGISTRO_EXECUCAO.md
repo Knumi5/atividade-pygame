@@ -166,3 +166,10 @@ Ao vencer o prazo, a penalidade combinada é aplicada uma única vez, mesmo com 
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
 - Resultado: 1 passed in 0.12s.
+
+## Q06-CA04
+
+O encontro vencido é encerrado e não dispara repetidamente a mesma penalidade.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over`.
+- Resultado: 2 passed in 0.18s.
