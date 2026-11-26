@@ -142,7 +142,9 @@ class Game:
         if self.boss_ativo:
             return False
         self.tempo_boss += segundos
-        return confirma_tempo(self.tempo_boss, self.boss_ativo)
+        if confirma_tempo(self.tempo_boss, self.boss_ativo):
+            return self.criar_boss()
+        return False
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):
         """Inicia uma partida a partir do menu e ativa o controle de câmera pelo mouse.

@@ -19,3 +19,10 @@ No bloco existente de contagem, consultar confirma_tempo usando o contador e o e
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_update_consulta_regra_de_autorizacao tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria tests/test_encontros_boss.py::test_fora_da_partida_nao_conta_nem_cria`.
 - Resultado: 7 passed in 0.35s.
+
+## Q04-EX02
+
+Quando houver autorização, chamar spawn_boss e guardar o retorno no Game.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria tests/test_spawn_boss.py::test_criacao_guarda_os_dados_e_ativa_chefe`.
+- Resultado: 5 passed in 0.23s.
