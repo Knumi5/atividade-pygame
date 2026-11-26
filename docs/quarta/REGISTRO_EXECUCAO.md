@@ -159,3 +159,10 @@ O prazo começa na aparição válida e deixa de produzir punição após um cum
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_so_comeca_quando_ha_posicao_valida tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
 - Resultado: 2 passed in 0.15s.
+
+## Q06-CA03
+
+Ao vencer o prazo, a penalidade combinada é aplicada uma única vez, mesmo com vários quadros seguintes.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
+- Resultado: 1 passed in 0.12s.
