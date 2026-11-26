@@ -152,3 +152,10 @@ O prazo de cumprimento usa o valor que você já definiu na primeira etapa de qu
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_regras_confirmadas_pelo_usuario tests/test_encontros_boss.py::test_prazo_comeca_na_criacao_e_tem_contador_proprio`.
 - Resultado: 2 passed in 0.09s.
+
+## Q06-CA02
+
+O prazo começa na aparição válida e deixa de produzir punição após um cumprimento aceito.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_so_comeca_quando_ha_posicao_valida tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
+- Resultado: 2 passed in 0.15s.
