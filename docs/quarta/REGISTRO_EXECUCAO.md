@@ -110,3 +110,10 @@ Uma interação fora do alcance não encerra o encontro.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance`.
 - Resultado: 4 passed in 0.20s.
+
+## Q05-CA04
+
+Uma mesma entrada não conclui simultaneamente um terminal e o cumprimento.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal tests/test_encontros_boss.py::test_mesma_tecla_nao_cumprimenta_e_resolve_terminal`.
+- Resultado: 2 passed in 0.11s.
