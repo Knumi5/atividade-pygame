@@ -106,6 +106,8 @@ class RayCasting:
                 cor_base = COR_TAREFA_PENDENTE
             elif bloco_tipo == 3:
                 cor_base = COR_TAREFA_CONCLUIDA
+            elif bloco_tipo == 4:
+                cor_base = COR_TAREFA_ERRADA
             else:
                 cor_base = COR_PAREDE_ESCRITORIO
 

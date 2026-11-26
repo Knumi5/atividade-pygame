@@ -96,29 +96,32 @@ class Player:
         if self.checar_parede(int(self.x), int(self.y + dy)):
             self.y += dy
 
-    def interagir_tarefa(self, alcance=1.8):
-        """Conclui a tarefa pendente mais próxima dentro do alcance de interação.
+    def buscar_terminal_proximo(self, alcance=1.8):
+        """Localiza um terminal pendente sem alterar o mapa ou a pontuação.
 
         Parâmetros:
             alcance (float, opcional): Distância máxima até o centro da célula da tarefa
                 (padrão: 1.8).
 
         Retorno:
-            bool: True se alguma tarefa próxima foi concluída; False caso contrário.
+            tuple[int, int] | None: Posição do terminal próximo, ou None.
         """
         mais_proxima = None
         menor_distancia = alcance
-        for pos in self.game.map.tarefas_pendentes:
+        for pos in sorted(self.game.map.tarefas_pendentes):
             distancia = math.hypot(pos[0] + 0.5 - self.x, pos[1] + 0.5 - self.y)
             if distancia <= menor_distancia:
                 menor_distancia = distancia
                 mais_proxima = pos
 
-        if mais_proxima is None:
-            return False
+        return mais_proxima
 
-        # Aqui poderá abrir a tela de pergunta antes de concluir a tarefa
-        return self.game.map.concluir_tarefa(mais_proxima)
+    def interagir_tarefa(self, alcance=1.8):
+        """Abre a pergunta do terminal próximo; a resposta resolverá a tarefa."""
+        pos = self.buscar_terminal_proximo(alcance)
+        if pos is None:
+            return False
+        return self.game.abrir_pergunta(pos)
 
     def draw(self):
         """Desenha o jogador no mapa 2D (usado apenas em visualização 2D).

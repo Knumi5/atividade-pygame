@@ -131,6 +131,8 @@ class Map:
         self.mini_map = []
         self.world_map = {}
         self.tarefas_pendentes = set()
+        self.tarefas_concluidas = set()
+        self.tarefas_erradas = set()
         self.total_tarefas = 0
         self.carregar_mapa(nome_mapa, qtd_tarefas=qtd_tarefas)
 
@@ -157,6 +159,8 @@ class Map:
         self.mini_map = dados_mapa["grade"]
         self.world_map = {}
         self.tarefas_pendentes = set()
+        self.tarefas_concluidas = set()
+        self.tarefas_erradas = set()
         self.get_map()
         self.sortear_tarefas(qtd_tarefas)
 
@@ -210,10 +214,23 @@ class Map:
         Retorno:
             bool: True se a tarefa estava pendente e foi concluída; False caso contrário.
         """
+        return self.resolver_tarefa(pos, acertou=True)
+
+    def resolver_tarefa(self, pos, acertou):
+        """Resolve uma tarefa uma única vez, distinguindo acerto de erro.
+
+        O total inicial da rodada é preservado. A HUD pode contar resoluções
+        e acertos separadamente, sem apresentar um erro como tarefa acertada.
+        """
         if pos not in self.tarefas_pendentes:
             return False
         self.tarefas_pendentes.remove(pos)
-        self.world_map[pos] = 3  # Muda a cor da parede para indicar tarefa concluída
+        if acertou:
+            self.tarefas_concluidas.add(pos)
+            self.world_map[pos] = 3
+        else:
+            self.tarefas_erradas.add(pos)
+            self.world_map[pos] = 4
         return True
 
     def draw(self):
@@ -223,7 +240,8 @@ class Map:
             Nenhum (usa `self.game.screen` e `self.world_map`).
         """
         for pos, valor in self.world_map.items():
-            cor = 'cyan' if valor == T else ('green' if valor == 3 else 'darkgrey')
+            cores = {T: 'cyan', 3: 'green', 4: 'red'}
+            cor = cores.get(valor, 'darkgrey')
             pg.draw.rect(
                 self.game.screen,
                 cor,
