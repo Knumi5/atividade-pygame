@@ -47,3 +47,10 @@ Ao atingir ou ultrapassar 30 segundos, uma única criação válida acontece.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
 - Resultado: 4 passed in 0.23s.
+
+## Q04-CA03
+
+Com boss_ativo verdadeiro, novos quadros não criam outro chefe.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe`.
+- Resultado: 1 passed in 0.12s.
