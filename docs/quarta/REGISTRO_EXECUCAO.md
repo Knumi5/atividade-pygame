@@ -138,3 +138,10 @@ Atualizar esse prazo enquanto o encontro estiver ativo e aplicar a penalidade pr
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_decrementa_sem_mudar_contador_de_espera tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
 - Resultado: 2 passed in 0.18s.
+
+## Q06-EX03
+
+Encerrar ou marcar o encontro como resolvido antes que os quadros seguintes possam aplicar a penalidade novamente; rearmar o ciclo conforme sua regra.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over`.
+- Resultado: 2 passed in 0.22s.
