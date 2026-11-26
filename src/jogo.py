@@ -58,6 +58,9 @@ class Game:
         self.painel_pergunta = None
         self.nome_jogador = ""  # preenchido pela Tela_inicial ao escolher "Jogar"
         self.tela_guia = Guia_jogo(self)      # NOVO
+        self.tempo_boss  = 0.0
+        self.boss_ativo = False
+    
 
     def new_game(self, nome_mapa="aleatorio"):
         """Reinicia os dados da partida (rodada 1, 5 chances, 0 pontos) e abre a 1ª rodada.
