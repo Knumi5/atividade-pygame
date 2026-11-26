@@ -32,3 +32,40 @@ Comando: `python -m pytest -q` na raiz do projeto.
 Antes de alterar `src/`, a coleta dos testes falhou com `ImportError`:
 `jogo.py` importava `temporizador`, mas `boss.py` declara `confirma_tempo`.
 Essa falha foi reproduzida em `python -m pytest -q`.
+
+Após corrigir o import e a atribuição do contador, a mesma suíte apresentou
+**25 falhas e 1 aprovação**: faltavam o retorno de `spawn_boss`, a busca da
+posição e a criação integrada. Foi acrescentada também uma regressão para
+impedir uma tentativa de criação no menu, sem mapa carregado.
+
+## Validação final
+
+- **27 testes aprovados**, nenhuma falha, em `python -m pytest -q`.
+- CA01 a CA09 aprovados pelos casos de dados, seleção, limites, cinco mapas,
+  criação única, reinício, importação e desenho de um quadro texturizado.
+- `git diff --check` e compilação de `src/` e `tests/` aprovados.
+- Ambiente: Python 3.12, Pygame 2.6.1 e SDL de vídeo/áudio `dummy`.
+
+## Checklist do Q03
+
+- [x] Parâmetro `posicao` recebe a tupla `(x, y)`.
+- [x] `Game.escolher_posicao_boss()` usa a célula atual do jogador.
+- [x] São examinadas apenas as células de cima, baixo, esquerda e direita.
+- [x] Candidatas ficam dentro da grade e fora de `world_map`.
+- [x] A posição retornada fica no centro da célula escolhida.
+- [x] Sem vizinha livre, a busca retorna `None` e não há criação.
+- [x] `spawn_boss()` devolve um novo dicionário com `x`, `y` e `ativo`.
+- [x] `Game.criar_boss()` guarda os dados e informa se houve criação.
+
+## Como usar
+
+Durante uma partida carregada, `game.criar_boss()` tenta criar a entidade:
+
+- Retorna `True` ao guardar os dados em `game.boss` e ativar `boss_ativo`.
+- Retorna `False` sem vizinha livre, fora da partida ou com chefe já ativo.
+- `game.boss` contém `x` e `y` em coordenadas do mapa e `ativo=True`.
+- Nova partida limpa os dados, o estado, o contador e o aviso anterior.
+
+O acionamento dessa chamada aos 30 segundos será feito no Q04. A imagem do
+chefe em 3D será conectada na etapa de renderização; o Q03 entrega seus dados
+e a posição válida, sem alterar o desenho atual das paredes e texturas.

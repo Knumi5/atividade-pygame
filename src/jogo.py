@@ -1,8 +1,9 @@
 import sys
+import random
 import pygame as pg
 
 if __package__:
-    from .boss import confirma_tempo
+    from .boss import confirma_tempo, spawn_boss
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -14,7 +15,7 @@ if __package__:
     from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
 else:
-    from boss import confirma_tempo
+    from boss import confirma_tempo, spawn_boss
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from settings import *
@@ -62,6 +63,7 @@ class Game:
         self.tela_guia = Guia_jogo(self)      # NOVO
         self.tempo_boss  = 0.0
         self.boss_ativo = False
+        self.boss = None
     
 
     def new_game(self, nome_mapa="aleatorio"):
@@ -78,6 +80,8 @@ class Game:
         self.map = None
         self.tempo_boss = 0.0
         self.boss_ativo = False 
+        self.boss = None
+        self.aviso_chefe = ""
         self.iniciar_rodada(nome_mapa)
 
     def iniciar_rodada(self, nome_mapa="aleatorio"):
@@ -101,6 +105,35 @@ class Game:
         self.player = Player(self)
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
+
+    def escolher_posicao_boss(self):
+        """Escolhe o centro de uma célula livre ao lado do jogador, ou None."""
+        jogador_x, jogador_y = self.player.map_pos
+        grade = self.map.mini_map
+        candidatas = []
+
+        for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)):
+            x, y = jogador_x + dx, jogador_y + dy
+            dentro_do_mapa = 0 <= y < len(grade) and 0 <= x < len(grade[y])
+            if dentro_do_mapa and (x, y) not in self.map.world_map:
+                candidatas.append((x + 0.5, y + 0.5))
+
+        if not candidatas:
+            return None
+        return random.choice(candidatas)
+
+    def criar_boss(self):
+        """Guarda um único chefe se houver posição livre; informa se criou."""
+        if self.estado != "jogando" or self.boss_ativo:
+            return False
+
+        posicao = self.escolher_posicao_boss()
+        if posicao is None:
+            return False
+
+        self.boss = spawn_boss(posicao)
+        self.boss_ativo = True
+        return True
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):
         """Inicia uma partida a partir do menu e ativa o controle de câmera pelo mouse.

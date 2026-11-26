@@ -144,6 +144,14 @@ def test_partida_comeca_sem_criar_chefe_automaticamente(game):
     assert game.tempo_boss == 0.0
 
 
+def test_menu_nao_cria_chefe_sem_mapa_carregado(game):
+    instancia = jogo.Game()
+    assert instancia.estado == "menu"
+    assert instancia.criar_boss() is False
+    assert instancia.boss is None
+    assert instancia.boss_ativo is False
+
+
 def test_criacao_preserva_tarefas_pontos_e_chances(game):
     tarefas = set(game.map.tarefas_pendentes)
     estado = game.pontos, game.chances, game.tempo_restante, game.player.pos

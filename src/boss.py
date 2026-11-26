@@ -24,8 +24,12 @@ def confirma_tempo(tempo, boss):
         return False
 
 # Spawna o boss
-def spawn_boss(spawn):
-    pass
+def spawn_boss(posicao):
+    """Cria os dados do chefe em uma posição (x, y) já validada pelo Game."""
+    x, y = posicao
+    return {"x": float(x), "y": float(y), "ativo": True}
+
+
 def dano_boss():
     pass
 
