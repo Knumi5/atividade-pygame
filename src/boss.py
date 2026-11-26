@@ -30,8 +30,9 @@ def spawn_boss(posicao):
     return {"x": float(x), "y": float(y), "ativo": True}
 
 
-def dano_boss():
-    pass
+def dano_boss(game, quantidade=1):
+    """Aplica a penalidade do encontro sem reiniciar a rodada."""
+    game.perder_chance(quantidade, reiniciar_rodada=False)
 
 def localizar_jogador():
     pass

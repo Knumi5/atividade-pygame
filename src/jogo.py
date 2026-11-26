@@ -4,7 +4,7 @@ import math
 import pygame as pg
 
 if __package__:
-    from .boss import confirma_tempo, spawn_boss
+    from .boss import confirma_tempo, spawn_boss, dano_boss
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -16,7 +16,7 @@ if __package__:
     from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
 else:
-    from boss import confirma_tempo, spawn_boss
+    from boss import confirma_tempo, spawn_boss, dano_boss
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from settings import *
@@ -180,6 +180,15 @@ class Game:
         if self.estado != "jogando" or self.painel_pergunta is not None:
             return False
         if self.boss_ativo:
+            self.tempo_cumprimento_boss = max(
+                0.0, self.tempo_cumprimento_boss - segundos
+            )
+            if self.tempo_cumprimento_boss <= 1e-9:
+                # Resolve antes de descontar para impedir punição em outro quadro.
+                self.encerrar_encontro_boss()
+                dano_boss(self, PENALIDADE_BOSS)
+            else:
+                self.atualizar_aviso_boss()
             return False
         self.tempo_boss += segundos
         if confirma_tempo(self.tempo_boss, self.boss_ativo):
@@ -209,17 +218,20 @@ class Game:
         pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
         pg.mouse.get_rel()
 
-    def perder_chance(self, quantidade=1):
+    def perder_chance(self, quantidade=1, reiniciar_rodada=True):
         """Desconta chances do jogador e verifica se houve Game Over ou nova tentativa.
 
         Parâmetros:
             quantidade (int, opcional): Quantidade de chances perdidas (padrão: 1).
+            reiniciar_rodada (bool): False para penalidade do chefe; mantém mapa e tarefas.
         """
         self.chances = tomar_dano(self.chances, quantidade)
         if jogador_perdeu(self.chances):
             self.encerrar_partida()
-        else:
+        elif reiniciar_rodada:
             # Ao estourar o tempo mas ainda ter chances, sorteia novo layout e reseta o tempo
+            if self.boss_ativo:
+                self.encerrar_encontro_boss()
             self.trocar_mapa("aleatorio")
 
     def encerrar_partida(self):
@@ -228,6 +240,8 @@ class Game:
         Parâmetros:
             Nenhum.
         """
+        self.encerrar_encontro_boss()
+        self.painel_pergunta = None
         if self.pontos > self.recorde:
             self.recorde = self.pontos
             salvar_recorde(CAMINHO_RECORDE, self.recorde)

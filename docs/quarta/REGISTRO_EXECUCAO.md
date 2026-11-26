@@ -131,3 +131,10 @@ Representar o prazo do encontro separadamente do intervalo de 30 segundos e do t
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_comeca_na_criacao_e_tem_contador_proprio tests/test_encontros_boss.py::test_prazo_so_comeca_quando_ha_posicao_valida tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
 - Resultado: 3 passed in 0.22s.
+
+## Q06-EX02
+
+Atualizar esse prazo enquanto o encontro estiver ativo e aplicar a penalidade prevista ao esgotar.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_prazo_decrementa_sem_mudar_contador_de_espera tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
+- Resultado: 2 passed in 0.18s.

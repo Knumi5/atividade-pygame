@@ -32,7 +32,7 @@ tags: [pygame, ricardo, quarta, execucao]
 
 ## Executar
 - [x] Representar o prazo do encontro separadamente do intervalo de 30 segundos e do tempo restante da rodada. <!-- Q06-EX01 -->
-- [ ] Atualizar esse prazo enquanto o encontro estiver ativo e aplicar a penalidade prevista ao esgotar. <!-- Q06-EX02 -->
+- [x] Atualizar esse prazo enquanto o encontro estiver ativo e aplicar a penalidade prevista ao esgotar. <!-- Q06-EX02 -->
 - [ ] Encerrar ou marcar o encontro como resolvido antes que os quadros seguintes possam aplicar a penalidade novamente; rearmar o ciclo conforme sua regra. <!-- Q06-EX03 -->
 
 > [!tip] Para raciocinar
