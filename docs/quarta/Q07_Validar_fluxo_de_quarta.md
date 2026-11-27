@@ -38,7 +38,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] 30,0 s e 30,1 s, chefe ausente: autorização e uma criação válida. <!-- Q07-CT02 -->
 - [x] Vários quadros com chefe ativo: nenhuma criação adicional. <!-- Q07-CT03 -->
 - [x] Cumprimento válido antes do prazo: encontro encerrado, sem penalidade. <!-- Q07-CT04 -->
-- [ ] Interação fora do alcance ou sem chefe: nenhum cumprimento aceito. <!-- Q07-CT05 -->
+- [x] Interação fora do alcance ou sem chefe: nenhum cumprimento aceito. <!-- Q07-CT05 -->
 - [ ] Prazo esgotado seguido de vários quadros: uma penalidade apenas. <!-- Q07-CT06 -->
 - [ ] Nova partida: contador zerado, chefe inativo e dados/aviso antigos limpos. <!-- Q07-CT07 -->
 - [ ] Penalidade com a última chance: Game Over. <!-- Q07-CT08 -->

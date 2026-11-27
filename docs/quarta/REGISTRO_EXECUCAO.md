@@ -226,3 +226,11 @@ Cumprimento válido antes do prazo: encontro encerrado, sem penalidade.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
 - Resultado: 1 passed in 0.08s.
 - Observado: F após 4 s encerrou o encontro, limpou o aviso e preservou as chances.
+
+## Q07-CT05
+
+Interação fora do alcance ou sem chefe: nenhum cumprimento aceito.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance tests/test_encontros_boss.py::test_sem_chefe_cumprimento_nao_tem_efeito`.
+- Resultado: 5 passed in 0.23s.
+- Observado: Distâncias 1,801 e 4 células foram rejeitadas; sem chefe o retorno foi False.
