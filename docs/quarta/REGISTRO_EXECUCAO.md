@@ -210,3 +210,11 @@ Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como con
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
 - Resultado: 4 passed in 0.25s.
 - Observado: Em 30,0 s e 30,1 s houve uma entidade ativa em célula livre.
+
+## Q07-CT03
+
+Vários quadros com chefe ativo: nenhuma criação adicional.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe`.
+- Resultado: 1 passed in 0.14s.
+- Observado: Após 20 quadros adicionais, uma chamada à criação e a mesma entidade.
