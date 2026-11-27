@@ -34,3 +34,12 @@ Python 3.12, Pygame 2.6.1 e vídeo/áudio SDL dummy. As superfícies, eventos e
 rotinas de desenho são reais; o avanço de tempo é controlado para testar
 limites sem esperar 30 segundos em cada caso. Teclado, mouse e desempenho
 na máquina de apresentação continuam sujeitos à validação presencial.
+
+## Encerramento
+
+- Suíte completa: **70 testes aprovados**, nenhuma falha.
+- Compilação de `src/` e `tests/`: aprovada.
+- `git diff --check`: aprovado.
+- Auditoria do histórico: **38 commits novos para 38 checkboxes**, exatamente
+  uma checkbox marcada em cada commit, com seu identificador na mensagem.
+- Q04, Q05, Q06 e Q07 estão concluídos nas notas desta pasta.

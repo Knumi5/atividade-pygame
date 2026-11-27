@@ -4,7 +4,7 @@ projeto: atividade-pygame
 responsavel: Ricardo
 atividade: "R04-R05"
 prioridade: P1
-status: pendente
+status: concluido
 estimativa_min: 15
 ordem: 7
 dia_do_plano: "2026-11-25"
@@ -26,7 +26,7 @@ tags: [pygame, ricardo, quarta, execucao]
 ## Critérios de aceite
 - [x] Todos os cenários abaixo têm resultado observado registrado. <!-- Q07-CA01 -->
 - [x] Não há criação duplicada, punição repetida ou estado antigo reaproveitado em uma nova partida. <!-- Q07-CA02 -->
-- [ ] O fluxo de R04 e R05 pode ser demonstrado do início ao fim. <!-- Q07-CA03 -->
+- [x] O fluxo de R04 e R05 pode ser demonstrado do início ao fim. <!-- Q07-CA03 -->
 
 ## Executar
 - [x] Preparar os cenários da lista antes da execução e testar os limites de tempo de forma controlada. <!-- Q07-EX01 -->

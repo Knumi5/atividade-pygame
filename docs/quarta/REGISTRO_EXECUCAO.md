@@ -272,3 +272,10 @@ Não há criação duplicada, punição repetida ou estado antigo reaproveitado 
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
 - Resultado: 3 passed in 0.27s.
+
+## Q07-CA03
+
+O fluxo de R04 e R05 pode ser demonstrado do início ao fim.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over`.
+- Resultado: 1 passed in 0.11s.
