@@ -265,3 +265,10 @@ Todos os cenários abaixo têm resultado observado registrado.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
 - Resultado: 7 passed in 0.41s.
+
+## Q07-CA02
+
+Não há criação duplicada, punição repetida ou estado antigo reaproveitado em uma nova partida.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
+- Resultado: 3 passed in 0.27s.

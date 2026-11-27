@@ -25,7 +25,7 @@ tags: [pygame, ricardo, quarta, execucao]
 
 ## Critérios de aceite
 - [x] Todos os cenários abaixo têm resultado observado registrado. <!-- Q07-CA01 -->
-- [ ] Não há criação duplicada, punição repetida ou estado antigo reaproveitado em uma nova partida. <!-- Q07-CA02 -->
+- [x] Não há criação duplicada, punição repetida ou estado antigo reaproveitado em uma nova partida. <!-- Q07-CA02 -->
 - [ ] O fluxo de R04 e R05 pode ser demonstrado do início ao fim. <!-- Q07-CA03 -->
 
 ## Executar
