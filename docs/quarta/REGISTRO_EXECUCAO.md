@@ -242,3 +242,11 @@ Prazo esgotado seguido de vários quadros: uma penalidade apenas.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
 - Resultado: 1 passed in 0.12s.
 - Observado: Prazo de 5 s reduziu chances de 5 para 4, preservou mapa e tarefas; dez quadros depois não houve novo desconto.
+
+## Q07-CT07
+
+Nova partida: contador zerado, chefe inativo e dados/aviso antigos limpos.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
+- Resultado: 1 passed in 0.07s.
+- Observado: Nova partida iniciou com contador 0, chefe None/inativo, prazo 0 e aviso vazio.
