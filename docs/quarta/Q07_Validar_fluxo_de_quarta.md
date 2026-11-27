@@ -41,7 +41,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] Interação fora do alcance ou sem chefe: nenhum cumprimento aceito. <!-- Q07-CT05 -->
 - [x] Prazo esgotado seguido de vários quadros: uma penalidade apenas. <!-- Q07-CT06 -->
 - [x] Nova partida: contador zerado, chefe inativo e dados/aviso antigos limpos. <!-- Q07-CT07 -->
-- [ ] Penalidade com a última chance: Game Over. <!-- Q07-CT08 -->
+- [x] Penalidade com a última chance: Game Over. <!-- Q07-CT08 -->
 
 > [!tip] Para raciocinar
 > Use os mesmos casos antes e depois de cada ajuste. A função isolada e a partida integrada verificam partes diferentes.

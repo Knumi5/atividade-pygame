@@ -250,3 +250,11 @@ Nova partida: contador zerado, chefe inativo e dados/aviso antigos limpos.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_nova_partida_limpa_todo_estado_do_encontro`.
 - Resultado: 1 passed in 0.07s.
 - Observado: Nova partida iniciou com contador 0, chefe None/inativo, prazo 0 e aviso vazio.
+
+## Q07-CT08
+
+Penalidade com a última chance: Game Over.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_penalidade_com_ultima_chance_salva_ranking_e_game_over`.
+- Resultado: 1 passed in 0.07s.
+- Observado: Última chance foi de 1 a 0, estado game_over e pontuação 7 salva em recorde e ranking temporários.
