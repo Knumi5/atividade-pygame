@@ -218,3 +218,11 @@ Vários quadros com chefe ativo: nenhuma criação adicional.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_varios_quadros_nao_duplicam_chefe`.
 - Resultado: 1 passed in 0.14s.
 - Observado: Após 20 quadros adicionais, uma chamada à criação e a mesma entidade.
+
+## Q07-CT04
+
+Cumprimento válido antes do prazo: encontro encerrado, sem penalidade.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_no_prazo_nao_pune`.
+- Resultado: 1 passed in 0.08s.
+- Observado: F após 4 s encerrou o encontro, limpou o aviso e preservou as chances.
