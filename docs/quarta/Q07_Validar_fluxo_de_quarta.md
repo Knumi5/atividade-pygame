@@ -30,7 +30,7 @@ tags: [pygame, ricardo, quarta, execucao]
 
 ## Executar
 - [x] Preparar os cenários da lista antes da execução e testar os limites de tempo de forma controlada. <!-- Q07-EX01 -->
-- [ ] Depois dos testes de regra, percorrer a partida para validar a ligação com eventos, HUD e Game Over. <!-- Q07-EX02 -->
+- [x] Depois dos testes de regra, percorrer a partida para validar a ligação com eventos, HUD e Game Over. <!-- Q07-EX02 -->
 - [ ] Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como concluídos. <!-- Q07-EX03 -->
 
 ## Cenários a validar

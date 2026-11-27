@@ -16,7 +16,9 @@ class Guia_jogo:
         "para olhar ao redor."),
         ("texto", "Ao chegar perto de uma tarefa, aperte Mouse 1 ou E para interagir com ela."),
         
-        ("texto", "O chefe irá aparecer a cada 30 segundo, quando ele chegar vá até ele e comprimente-o")]
+        ("texto", "O chefe aparece após 30 segundos de jogo ativo. Aproxime-se e pressione F para cumprimentá-lo."),
+        ("texto", "Você tem 5 segundos para cumprir a exigência, a até 1,8 célula de distância. Se não cumprir, perde uma chance, sem reiniciar a rodada."),
+        ("texto", "Durante uma pergunta, os cronômetros ficam pausados. Depois do encontro, uma nova espera de 30 segundos começa.")]
 
     def __init__(self, game):
         self.game = game
@@ -115,4 +117,3 @@ class Guia_jogo:
             dica += "   |   Setas ou roda do mouse: rolar"
         surf = self.fonte_dica.render(dica, True, "gray")
         tela.blit(surf, surf.get_rect(center=(largura // 2, altura - 25)))
-            

@@ -180,3 +180,10 @@ Se a penalidade zerar as chances, a partida segue para o Game Over existente.
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_penalidade_com_ultima_chance_salva_ranking_e_game_over`.
 - Resultado: 1 passed in 0.08s.
+
+## Q07-EX02
+
+Depois dos testes de regra, percorrer a partida para validar a ligação com eventos, HUD e Game Over.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal`.
+- Resultado: 2 passed in 0.19s.
