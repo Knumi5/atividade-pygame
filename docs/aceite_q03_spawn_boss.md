@@ -66,6 +66,6 @@ Durante uma partida carregada, `game.criar_boss()` tenta criar a entidade:
 - `game.boss` contém `x` e `y` em coordenadas do mapa e `ativo=True`.
 - Nova partida limpa os dados, o estado, o contador e o aviso anterior.
 
-O acionamento dessa chamada aos 30 segundos será feito no Q04. A imagem do
-chefe em 3D será conectada na etapa de renderização; o Q03 entrega seus dados
-e a posição válida, sem alterar o desenho atual das paredes e texturas.
+O acionamento aos 30 segundos e o ciclo de cumprimento foram implementados
+em Q04-Q07, descritos em `docs/quarta/REGISTRO_EXECUCAO.md`. A imagem do chefe
+em 3D pertence à etapa de renderização; o Q03 fornece seus dados e a posição.

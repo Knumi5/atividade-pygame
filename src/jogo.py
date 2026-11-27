@@ -108,6 +108,13 @@ class Game:
         self.player = Player(self)
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
+        if self.boss_ativo and self.boss is not None:
+            # O encontro continua, mas suas coordenadas precisam servir ao novo mapa.
+            posicao = self.escolher_posicao_boss()
+            if posicao is None:
+                self.encerrar_encontro_boss()
+            else:
+                self.boss["x"], self.boss["y"] = posicao
 
     def escolher_posicao_boss(self):
         """Escolhe o centro de uma célula livre ao lado do jogador, ou None."""
@@ -176,7 +183,7 @@ class Game:
         return True
 
     def atualizar_boss(self, segundos):
-        """Conta apenas o tempo de jogo ativo e consulta a regra de aparição."""
+        """Atualiza espera, aparição e prazo somente durante jogo ativo."""
         if self.estado != "jogando" or self.painel_pergunta is not None:
             return False
         if self.boss_ativo:

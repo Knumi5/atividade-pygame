@@ -187,3 +187,10 @@ Depois dos testes de regra, percorrer a partida para validar a ligação com eve
 
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_ciclo_completo_eventos_hud_e_game_over tests/test_encontros_boss.py::test_evento_f_cumprimenta_sem_interagir_com_terminal`.
 - Resultado: 2 passed in 0.19s.
+
+## Q07-EX03
+
+Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como concluídos.
+
+- Verificação: `python -m pytest -q tests`.
+- Resultado: 70 passed in 2.91s.

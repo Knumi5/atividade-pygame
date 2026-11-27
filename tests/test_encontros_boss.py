@@ -315,6 +315,8 @@ def test_nova_partida_limpa_todo_estado_do_encontro(encontro):
 
 @pytest.mark.parametrize("nome_mapa", list(MAPAS))
 def test_troca_de_mapa_preserva_encontro_em_posicao_valida(encontro, nome_mapa):
+    # Ponto livre longe da posição inicial do próximo layout: força reposicionamento.
+    encontro.player.x, encontro.player.y = 14.5, 7.5
     chefe = aparecer(encontro)
     avancar(encontro, 1.0)
     prazo = encontro.tempo_cumprimento_boss

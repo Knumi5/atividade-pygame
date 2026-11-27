@@ -17,6 +17,17 @@ Os resultados observados e os comandos de cada cenário ficam nas entradas
 Q07-CT01 a Q07-CT08 de `REGISTRO_EXECUCAO.md`. Cada entrada é registrada
 somente após o teste correspondente passar.
 
+## Regressão encontrada e corrigida
+
+A revisão completa reproduziu **5 falhas e 65 aprovações**: ao trocar de
+layout, a entidade conservava coordenadas do mapa anterior. Os cinco casos
+foram tornados determinísticos, iniciando o encontro longe da posição inicial
+do novo layout. A correção reposiciona a mesma entidade em uma vizinha livre,
+sem reiniciar o prazo. Se não houver ponto válido, o encontro é limpo.
+
+A renderização foi conferida nas etapas de aparição, cumprimento, penalidade
+e Game Over, usando capturas das superfícies reais do jogo.
+
 ## Ambiente
 
 Python 3.12, Pygame 2.6.1 e vídeo/áudio SDL dummy. As superfícies, eventos e
