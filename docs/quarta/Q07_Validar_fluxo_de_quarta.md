@@ -24,7 +24,7 @@ tags: [pygame, ricardo, quarta, execucao]
 > A regra de autorização foi testada isoladamente, mas o fluxo integrado de quarta ainda precisa ser validado após a implementação.
 
 ## Critérios de aceite
-- [ ] Todos os cenários abaixo têm resultado observado registrado. <!-- Q07-CA01 -->
+- [x] Todos os cenários abaixo têm resultado observado registrado. <!-- Q07-CA01 -->
 - [ ] Não há criação duplicada, punição repetida ou estado antigo reaproveitado em uma nova partida. <!-- Q07-CA02 -->
 - [ ] O fluxo de R04 e R05 pode ser demonstrado do início ao fim. <!-- Q07-CA03 -->
 

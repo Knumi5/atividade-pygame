@@ -258,3 +258,10 @@ Penalidade com a última chance: Game Over.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_penalidade_com_ultima_chance_salva_ranking_e_game_over`.
 - Resultado: 1 passed in 0.07s.
 - Observado: Última chance foi de 1 a 0, estado game_over e pontuação 7 salva em recorde e ranking temporários.
+
+## Q07-CA01
+
+Todos os cenários abaixo têm resultado observado registrado.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
+- Resultado: 7 passed in 0.41s.
