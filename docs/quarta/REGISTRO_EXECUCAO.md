@@ -234,3 +234,11 @@ Interação fora do alcance ou sem chefe: nenhum cumprimento aceito.
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_cumprimento_respeita_alcance tests/test_encontros_boss.py::test_sem_chefe_cumprimento_nao_tem_efeito`.
 - Resultado: 5 passed in 0.23s.
 - Observado: Distâncias 1,801 e 4 células foram rejeitadas; sem chefe o retorno foi False.
+
+## Q07-CT06
+
+Prazo esgotado seguido de vários quadros: uma penalidade apenas.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_expiracao_aplica_uma_penalidade_e_preserva_rodada`.
+- Resultado: 1 passed in 0.12s.
+- Observado: Prazo de 5 s reduziu chances de 5 para 4, preservou mapa e tarefas; dez quadros depois não houve novo desconto.
