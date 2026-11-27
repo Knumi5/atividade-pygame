@@ -194,3 +194,11 @@ Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como con
 
 - Verificação: `python -m pytest -q tests`.
 - Resultado: 70 passed in 2.91s.
+
+## Q07-CT01
+
+29,9 s, chefe ausente: nenhuma criação.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria`.
+- Resultado: 3 passed in 0.19s.
+- Observado: Em 29,9 s, boss=None e boss_ativo=False.

@@ -34,7 +34,7 @@ tags: [pygame, ricardo, quarta, execucao]
 - [x] Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como concluídos. <!-- Q07-EX03 -->
 
 ## Cenários a validar
-- [ ] 29,9 s, chefe ausente: nenhuma criação. <!-- Q07-CT01 -->
+- [x] 29,9 s, chefe ausente: nenhuma criação. <!-- Q07-CT01 -->
 - [ ] 30,0 s e 30,1 s, chefe ausente: autorização e uma criação válida. <!-- Q07-CT02 -->
 - [ ] Vários quadros com chefe ativo: nenhuma criação adicional. <!-- Q07-CT03 -->
 - [ ] Cumprimento válido antes do prazo: encontro encerrado, sem penalidade. <!-- Q07-CT04 -->
