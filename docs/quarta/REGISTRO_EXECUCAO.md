@@ -202,3 +202,11 @@ Registrar o observado e corrigir qualquer falha antes de marcar R04/R05 como con
 - Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_antes_30_segundos_nao_cria`.
 - Resultado: 3 passed in 0.19s.
 - Observado: Em 29,9 s, boss=None e boss_ativo=False.
+
+## Q07-CT02
+
+30,0 s e 30,1 s, chefe ausente: autorização e uma criação válida.
+
+- Verificação: `python -m pytest -q tests/test_encontros_boss.py::test_atingir_ou_ultrapassar_30_cria`.
+- Resultado: 4 passed in 0.25s.
+- Observado: Em 30,0 s e 30,1 s houve uma entidade ativa em célula livre.
