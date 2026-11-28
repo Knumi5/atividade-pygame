@@ -153,6 +153,46 @@ def test_nao_cumprimenta_atraves_de_parede(final_game):
     assert final_game.cumprimentar_boss() is False
 
 
+def test_erro_de_missao_preserva_encontro_e_mapa(final_game):
+    final_game.criar_boss()
+    encontro, mapa = final_game.boss, final_game.map
+    prazo = final_game.tempo_cumprimento_boss
+    chances = final_game.chances
+    final_game.abrir_pergunta(next(iter(mapa.tarefas_pendentes)))
+    final_game.painel_pergunta["digitado"] = "resposta errada"
+    assert final_game.confirmar_resposta() is False
+    assert final_game.map is mapa and final_game.boss is encontro
+    assert final_game.tempo_cumprimento_boss == prazo
+    assert final_game.chances == chances - 1
+
+
+def test_troca_de_rodada_descarta_rota_antiga_e_reutiliza_recursos(final_game):
+    final_game.criar_boss()
+    final_game.boss["_rota"] = [(99.5, 99.5)]
+    final_game.boss["_alvo"] = (99, 99)
+    renderer = final_game.object_renderer
+    final_game.trocar_mapa("layout_2")
+    assert "_rota" not in final_game.boss and "_alvo" not in final_game.boss
+    assert final_game.object_renderer is renderer
+    assert final_game.raycasting.ray_casting_result
+
+
+def test_reinicio_limpa_chefe_e_pergunta(final_game):
+    final_game.criar_boss()
+    final_game.abrir_pergunta(next(iter(final_game.map.tarefas_pendentes)))
+    final_game.iniciar_jogo("layout_3")
+    assert final_game.boss is None and not final_game.boss_ativo
+    assert not final_game.em_tarefa and final_game.tempo_boss == 0.0
+
+
+def test_atalhos_de_debug_nao_pulam_missoes(final_game):
+    mapa = final_game.map.nome_mapa
+    for tecla in (pg.K_1, pg.K_m):
+        pg.event.post(pg.event.Event(pg.KEYDOWN, key=tecla, unicode=""))
+    final_game.check_events()
+    assert final_game.map.nome_mapa == mapa
+
+
 def test_ranking_desenha_e_esc_volta_ao_menu(final_game):
     final_game.estado="ranking"
     final_game.draw()

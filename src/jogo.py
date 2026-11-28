@@ -121,8 +121,10 @@ class Game:
             self.map.carregar_mapa(nome_mapa, qtd_tarefas=TAREFAS_POR_RODADA)
 
         self.player = Player(self)
-        self.object_renderer = ObjectRenderer(self)
+        if not hasattr(self, "object_renderer"):
+            self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
+        self.raycasting.update()
         if self.boss_ativo and self.boss is not None:
             # O encontro continua, mas suas coordenadas precisam servir ao novo mapa.
             posicao = self.escolher_posicao_boss()
@@ -130,6 +132,8 @@ class Game:
                 self.encerrar_encontro_boss()
             else:
                 self.boss["x"], self.boss["y"] = posicao
+                self.boss.pop("_rota", None)
+                self.boss.pop("_alvo", None)
 
     def escolher_posicao_boss(self):
         """Escolhe o centro de uma célula livre ao lado do jogador, ou None."""
@@ -193,6 +197,9 @@ class Game:
             self.player.x - self.boss["x"], self.player.y - self.boss["y"]
         )
         if distancia > ALCANCE_CUMPRIMENTO_BOSS + 1e-9:
+            return False
+        if not linha_livre(self.player.pos, (self.boss["x"], self.boss["y"]),
+                           self.map.world_map):
             return False
         self.encerrar_encontro_boss()
         return True
@@ -608,13 +615,6 @@ class Game:
         Parâmetros:
             Nenhum.
         """
-        teclas_mapas = {
-            pg.K_1: ORDEM_MAPAS[0],
-            pg.K_2: ORDEM_MAPAS[1],
-            pg.K_3: ORDEM_MAPAS[2],
-            pg.K_4: ORDEM_MAPAS[3],
-            pg.K_5: ORDEM_MAPAS[4],
-        }
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.sair()
@@ -648,11 +648,6 @@ class Game:
                 )
                 if interagiu:
                     self.player.interagir_tarefa()
-                elif event.type == pg.KEYDOWN:
-                    if event.key in teclas_mapas:
-                        self.trocar_mapa(teclas_mapas[event.key])
-                    elif event.key == pg.K_m:
-                        self.trocar_mapa("aleatorio")                        # NOVO
 
     def run(self):
         """Executa o loop principal do jogo indefinidamente até o usuário sair.

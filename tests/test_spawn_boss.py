@@ -164,7 +164,7 @@ def test_quadro_texturizado_continua_funcionando_com_dados_do_chefe(game):
     assert game.criar_boss() is True
     game.update()
     game.draw()
-    assert set(game.object_renderer.texturas_parede) == {1, 2, 3}
+    assert set(game.object_renderer.texturas_parede) == {1, 2, 3, 4}
 
 
 def test_import_direto_do_modulo_tambem_funciona():
