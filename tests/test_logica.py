@@ -1,5 +1,151 @@
 """OS TESTES DAS FUNÇÕES DEVERÃO FICAR AQUI. """
 
+"""testes pra ver se o jogo roda liso liso liso"""
+
+from src.settings import (
+    RES,
+    WIDTH,
+    HEIGHT,
+    FPS,
+    CHANCES_INICIAIS,
+    TAREFAS_POR_RODADA,
+    TEMPO_INICIAL_RODADA,
+    REDUCAO_TEMPO_RODADA,
+    TEMPO_MINIMO_RODADA
+)
+
+
+def test_resolucao_janela():
+    assert RES == (1600, 900)
+
+
+def test_largura_janela():
+    assert WIDTH == 1600
+
+
+def test_altura_janela():
+    assert HEIGHT == 900
+
+
+def test_fps():
+    assert FPS == 60
+
+
+def test_chances_iniciais():
+    assert CHANCES_INICIAIS == 5
+
+
+def test_tarefas_por_rodada():
+    assert TAREFAS_POR_RODADA == 3
+
+
+def test_tempo_inicial():
+    assert TEMPO_INICIAL_RODADA == 45.0
+
+
+def test_reducao_tempo():
+    assert REDUCAO_TEMPO_RODADA == 3.0
+
+
+def test_tempo_minimo():
+    assert TEMPO_MINIMO_RODADA == 15.0
+
+
+def test_tempo_inicial_maior_que_minimo():
+    assert TEMPO_INICIAL_RODADA > TEMPO_MINIMO_RODADA
+
+""" testes pra ver pts,colisão,se perdeu kkkk, se tomou dano pq atrasou """
+
+import pygame
+import pytest
+
+from src.funcoes import (
+    calcular_pontos,
+    tomar_dano,
+    jogador_perdeu,
+    limitar_valor,
+    verificar_colisao
+)
+
+
+""" Testes de pontuação """
+def test_calcular_pontos():
+    assert calcular_pontos(100, 50) == 150
+
+
+def test_calcular_pontos_zero():
+    assert calcular_pontos(100, 0) == 100
+
+
+def test_calcular_pontos_negativos():
+    assert calcular_pontos(100, -20) == 80
+
+
+""" Testes de vida e dano"""
+
+def test_tomar_dano():
+    assert tomar_dano(100, 30) == 70
+
+
+def test_tomar_dano_total():
+    assert tomar_dano(100, 100) == 0
+
+
+def test_tomar_dano_excedente():
+    assert tomar_dano(100, 150) == -50
+
+
+# Testes de fim de jogo
+def test_jogador_perdeu():
+    assert jogador_perdeu(0) is True
+
+
+def test_jogador_perdeu_vidas_negativas():
+    assert jogador_perdeu(-1) is True
+
+
+def test_jogador_ainda_tem_vidas():
+    assert jogador_perdeu(3) is False
+
+
+# Testes de limite de valores
+def test_limitar_valor_minimo():
+    assert limitar_valor(-10, 0, 100) == 0
+
+
+def test_limitar_valor_maximo():
+    assert limitar_valor(150, 0, 100) == 100
+
+
+def test_limitar_valor_dentro_intervalo():
+    assert limitar_valor(50, 0, 100) == 50
+
+
+""" Testes de colisão """ 
+
+def test_verificar_colisao():
+    retangulo_1 = pygame.Rect(0, 0, 50, 50)
+    retangulo_2 = pygame.Rect(25, 25, 50, 50)
+
+    assert verificar_colisao(retangulo_1, retangulo_2) is True
+
+
+def test_nao_verificar_colisao():
+    retangulo_1 = pygame.Rect(0, 0, 50, 50)
+    retangulo_2 = pygame.Rect(100, 100, 50, 50)
+
+    assert verificar_colisao(retangulo_1, retangulo_2) is False
+
+
+def test_retangulos_apenas_encostados():
+    retangulo_1 = pygame.Rect(0, 0, 50, 50)
+    retangulo_2 = pygame.Rect(50, 0, 50, 50)
+
+    assert verificar_colisao(retangulo_1, retangulo_2) is False
+
+
+"""testes relacionados a mapas"""
+
 import pytest
 
 from src.map import Map, MAPAS, ORDEM_MAPAS, T
@@ -117,3 +263,6 @@ def test_diminuir_tarefas_pendentes():
     mapa.concluir_tarefa(posicao)
 
     assert len(mapa.tarefas_pendentes) == 2
+
+"""Para testar somente  uma coisa use:"""
+"""python -m pytest tests/test_logica.py -k adicione_aqui_o_nome_da_funçáo"""
