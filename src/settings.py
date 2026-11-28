@@ -51,6 +51,7 @@ COR_CHAO = (50, 56, 66)
 COR_PAREDE_ESCRITORIO = (175, 162, 138)  # Bege corporativo
 COR_TAREFA_PENDENTE = (0, 200, 255)      # Terminal azul/ciano
 COR_TAREFA_CONCLUIDA = (0, 220, 100)     # Terminal verde
+COR_TAREFA_ERRADA = (190, 65, 60)        # Terminal resolvido com erro
 
 # Caminhos absolutos para arquivos persistentes e recursos
 CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
