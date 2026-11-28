@@ -37,3 +37,11 @@ Antes da implementação: 20 cenários novos, com 9 falhas e 11 erros de prepara
 As falhas incluem APIs de navegação/áudio e recursos ausentes; os erros de
 preparação apontam o import inexistente de `temporizador` na main.
 Esse resultado registra a etapa inicial de TDD, não uma validação de entrega.
+
+## Resultado de aceite técnico
+
+QSF01-QSF10 aprovados nos cenários automatizados e nas telas renderizadas.
+Resultado completo: **186 testes aprovados** (157 existentes + 29 novos),
+sem falhas ou exclusões. Recursos carregados nos cinco layouts.
+Ver `RESULTADO_QUINTA_SEXTA.md` para evidências e limites da validação;
+a revisão presencial de áudio e controles e o merge continuam pendentes.
