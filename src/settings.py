@@ -28,6 +28,9 @@ TECLA_CUMPRIMENTO_BOSS = ord("f")
 ALCANCE_CUMPRIMENTO_BOSS = 1.8
 PRAZO_CUMPRIMENTO_BOSS = 5.0
 PENALIDADE_BOSS = 1
+VELOCIDADE_BOSS = 1.4        # Células por segundo
+RAIO_BOSS = 0.18
+DISTANCIA_PARADA_BOSS = 0.85
 
 # Configurações de controle da câmera pelo mouse
 MOUSE_SENSITIVITY = 0.0003
@@ -57,6 +60,7 @@ COR_TAREFA_ERRADA = (190, 65, 60)        # Terminal resolvido com erro
 CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
 CAMINHO_SPRITES = str(BASE_DIR / "assets" / "imagens" / "spritesheet.bmp")
 CAMINHO_TEXTURAS = BASE_DIR / "assets" / "imagens" / "texturas"
+CAMINHO_BOSS = BASE_DIR / "assets" / "imagens" / "chefe.png"
 
 # Dimensões padrão das texturas de parede (em pixels)
 TEXTURE_SIZE = 256

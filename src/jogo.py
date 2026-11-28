@@ -4,7 +4,7 @@ import math
 import pygame as pg
 
 if __package__:
-    from .boss import confirma_tempo, spawn_boss, dano_boss
+    from .boss import confirma_tempo, spawn_boss, dano_boss, locomoção_boss, linha_livre
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -18,7 +18,7 @@ if __package__:
     from .tela_ranking import Tela_Ranking
     from .tarefas import LIMITE_RESPOSTA, distribuir_perguntas, normalizar_resposta, validar_resposta
 else:
-    from boss import confirma_tempo, spawn_boss, dano_boss
+    from boss import confirma_tempo, spawn_boss, dano_boss, locomoção_boss, linha_livre
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from settings import *
@@ -210,6 +210,7 @@ class Game:
                 self.encerrar_encontro_boss()
                 dano_boss(self, PENALIDADE_BOSS)
             else:
+                locomoção_boss(self.boss, self.player, self.map, segundos)
                 self.atualizar_aviso_boss()
             return False
         self.tempo_boss += segundos

@@ -1,3 +1,4 @@
+import math
 import pygame as pg
 
 if __package__:
@@ -11,6 +12,7 @@ ARQUIVOS_TEXTURAS = {
     1: "1.png",  # Parede comum do escritório
     2: "2.png",  # Terminal/computador com tarefa pendente
     3: "3.png",  # Terminal/computador com tarefa concluída
+    4: "4.png",  # Terminal resolvido com erro
 }
 
 
@@ -33,6 +35,16 @@ class ObjectRenderer:
         self.game = game
         self.screen = game.screen
         self.texturas_parede = self.carregar_texturas_parede()
+        self.origem_sprite_boss = CAMINHO_BOSS if CAMINHO_BOSS.is_file() else None
+        if self.origem_sprite_boss:
+            self.sprite_boss = pg.image.load(str(CAMINHO_BOSS)).convert_alpha()
+        else:
+            self.sprite_boss = pg.Surface((64, 112), pg.SRCALPHA)
+            pg.draw.rect(self.sprite_boss, (35, 40, 50), (10, 40, 44, 70))
+            pg.draw.ellipse(self.sprite_boss, (205, 183, 158), (16, 4, 32, 42))
+            pg.draw.polygon(self.sprite_boss, (170, 45, 50), [(28, 44), (36, 44), (32, 76)])
+        self._projecao_boss = None
+        self._tamanho_boss = None
 
     def carregar_texturas_parede(self):
         """Carrega as texturas de `CAMINHO_TEXTURAS` ou usa texturas padrão de escritório.
@@ -90,9 +102,10 @@ class ObjectRenderer:
         pg.draw.line(superficie, (145, 134, 114), (0, 32), (TEXTURE_SIZE, 32), 3)
         pg.draw.rect(superficie, (140, 128, 108), (0, 0, TEXTURE_SIZE, TEXTURE_SIZE), 4)
 
-        if tipo_bloco in (2, 3):
+        if tipo_bloco in (2, 3, 4):
             # Desenha uma tela de terminal/computador no centro da parede
-            cor_tela = COR_TAREFA_PENDENTE if tipo_bloco == 2 else COR_TAREFA_CONCLUIDA
+            cor_tela = {2: COR_TAREFA_PENDENTE, 3: COR_TAREFA_CONCLUIDA,
+                        4: COR_TAREFA_ERRADA}[tipo_bloco]
             pg.draw.rect(superficie, (35, 38, 44), (44, 58, 168, 118))
             pg.draw.rect(superficie, cor_tela, (56, 70, 144, 94))
             pg.draw.rect(superficie, (45, 48, 56), (108, 176, 40, 22))
@@ -141,6 +154,44 @@ class ObjectRenderer:
 
             self.screen.blit(coluna, (raio * SCALE, pos_y))
 
+    def desenhar_boss(self):
+        """Projeta o sprite e testa profundidade por coluna contra as paredes.
+
+        O ângulo usa a mesma distribuição dos raios do cenário. Nenhum recurso
+        é lido do disco nesta etapa; só a projeção muda quando o tamanho muda.
+        Retorna quantas colunas passaram no teste de profundidade.
+        """
+        boss = getattr(self.game, "boss", None)
+        if not boss or not boss.get("ativo"):
+            return 0
+        player = self.game.player
+        dx, dy = boss["x"] - player.x, boss["y"] - player.y
+        frente = math.cos(player.angle) * dx + math.sin(player.angle) * dy
+        lado = -math.sin(player.angle) * dx + math.cos(player.angle) * dy
+        if frente <= 0.05:
+            return 0
+        angulo = math.atan2(lado, frente)
+        altura = max(1, min(HEIGHT * 3, round(SCREEN_DIST * 0.95 / frente)))
+        largura = max(1, round(altura * self.sprite_boss.get_width() / self.sprite_boss.get_height()))
+        centro = round((angulo + HALF_FOV) / DELTA_ANGLE * SCALE)
+        esquerda = centro - largura // 2
+        topo = round(HALF_HEIGHT + SCREEN_DIST * 0.5 / frente) - altura
+        if esquerda >= WIDTH or esquerda + largura <= 0:
+            return 0
+        tamanho = largura, altura
+        if tamanho != self._tamanho_boss:
+            self._projecao_boss = pg.transform.scale(self.sprite_boss, tamanho)
+            self._tamanho_boss = tamanho
+        colunas = 0
+        for raio, profundidade, *_resto in self.game.raycasting.ray_casting_result:
+            x = raio * SCALE
+            if esquerda <= x < esquerda + largura and frente < profundidade:
+                origem_x = x - esquerda
+                faixa = min(SCALE, largura - origem_x)
+                self.screen.blit(self._projecao_boss, (x, topo), (origem_x, 0, faixa, altura))
+                colunas += 1
+        return colunas
+
     def draw(self):
         """Renderiza o cenário 3D completo (fundo + paredes texturizadas).
 
@@ -149,3 +200,4 @@ class ObjectRenderer:
         """
         self.desenhar_fundo()
         self.desenhar_paredes()
+        self.desenhar_boss()
