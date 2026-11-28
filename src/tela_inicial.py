@@ -88,6 +88,8 @@ class Tela_inicial:
             self.game.sair()
         elif opcao_atual == "Guia":                  # NOVO
             self.game.estado = "guia"                # NOVO
+        elif opcao_atual == "Consultar rankings":    # NOVO PACAS 28/11
+            self.game.estado = "ranking"    
 
     def texto_opcao(self, indice):
         """Monta o texto exibido para uma opção (o campo de nome mostra o valor digitado).

@@ -13,6 +13,7 @@ if __package__:
     from .guia import Guia_jogo          # NOVO
     from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
+    from .tela_ranking import Tela_Ranking
 else:
     from boss import temporizador
     from dados import carregar_recorde, salvar_recorde
@@ -25,7 +26,7 @@ else:
     from guia import Guia_jogo           # NOVO
     from object_renderer import ObjectRenderer
     from raycasting import RayCasting
-
+    from tela_ranking import Tela_Ranking
 
 
 class Game:
@@ -62,7 +63,7 @@ class Game:
         self.tela_guia = Guia_jogo(self)      # NOVO
         self.tempo_boss  = 0.0
         self.boss_ativo = False
-    
+        self.tela_ranking = Tela_Ranking(self)
 
     def new_game(self, nome_mapa="aleatorio"):
         """Reinicia os dados da partida (rodada 1, 5 chances, 0 pontos) e abre a 1ª rodada.
@@ -148,6 +149,9 @@ class Game:
             self.recorde = self.pontos
             salvar_recorde(CAMINHO_RECORDE, self.recorde)
         # Grava no ranking.txt apenas se for a melhor pontuação deste jogador
+        # Easter egg: Gustavo recebe quatro vezes a pontuação
+        pontuacao_gustavo = self.pontos * 4
+        salvar_melhor("Gustavo", pontuacao_gustavo)
         salvar_melhor(self.nome_jogador, self.pontos)
         self.estado = "game_over"
         pg.event.set_grab(False)
@@ -316,6 +320,8 @@ class Game:
             self.desenhar_game_over()
         elif self.estado == "guia":           # NOVO
             self.tela_guia.draw()             # NOVO
+        elif self.estado == "ranking":        # NOVO PACAS 28/11
+            self.tela_ranking.tratar_evento(event)
         else:
             self.object_renderer.draw()
             self.desenhar_hud()
