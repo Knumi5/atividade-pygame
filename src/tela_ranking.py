@@ -91,7 +91,6 @@ class Tela_Ranking:
             instrucao.get_rect(center=(WIDTH // 2, HEIGHT - 60))
         )
 
-        pg.display.flip()
 
     def tratar_evento(self, event):
         if event.type == pg.KEYDOWN:

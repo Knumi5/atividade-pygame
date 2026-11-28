@@ -1,8 +1,10 @@
 import sys
+import random
+import math
 import pygame as pg
 
 if __package__:
-    from .boss import temporizador
+    from .boss import confirma_tempo, spawn_boss, dano_boss
     from .dados import carregar_recorde, salvar_recorde
     from .ranking import salvar_melhor
     from .funcoes import calcular_pontos, jogador_perdeu, tomar_dano
@@ -15,7 +17,7 @@ if __package__:
     from .raycasting import RayCasting
     from .tela_ranking import Tela_Ranking
 else:
-    from boss import temporizador
+    from boss import confirma_tempo, spawn_boss, dano_boss
     from dados import carregar_recorde, salvar_recorde
     from ranking import salvar_melhor
     from settings import *
@@ -64,6 +66,9 @@ class Game:
         self.tempo_boss  = 0.0
         self.boss_ativo = False
         self.tela_ranking = Tela_Ranking(self)
+        self.boss = None
+        self.tempo_cumprimento_boss = 0.0
+
 
     def new_game(self, nome_mapa="aleatorio"):
         """Reinicia os dados da partida (rodada 1, 5 chances, 0 pontos) e abre a 1ª rodada.
@@ -77,8 +82,11 @@ class Game:
         self.pontos = 0
         self.recorde = carregar_recorde(CAMINHO_RECORDE)
         self.map = None
-        self,tempo_boss  = 0.0
+        self.tempo_boss = 0.0
         self.boss_ativo = False 
+        self.boss = None
+        self.aviso_chefe = ""
+        self.tempo_cumprimento_boss = 0.0
         self.iniciar_rodada(nome_mapa)
 
     def iniciar_rodada(self, nome_mapa="aleatorio"):
@@ -102,6 +110,99 @@ class Game:
         self.player = Player(self)
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
+        if self.boss_ativo and self.boss is not None:
+            # O encontro continua, mas suas coordenadas precisam servir ao novo mapa.
+            posicao = self.escolher_posicao_boss()
+            if posicao is None:
+                self.encerrar_encontro_boss()
+            else:
+                self.boss["x"], self.boss["y"] = posicao
+
+    def escolher_posicao_boss(self):
+        """Escolhe o centro de uma célula livre ao lado do jogador, ou None."""
+        jogador_x, jogador_y = self.player.map_pos
+        grade = self.map.mini_map
+        candidatas = []
+
+        for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)):
+            x, y = jogador_x + dx, jogador_y + dy
+            dentro_do_mapa = 0 <= y < len(grade) and 0 <= x < len(grade[y])
+            if dentro_do_mapa and (x, y) not in self.map.world_map:
+                candidatas.append((x + 0.5, y + 0.5))
+
+        if not candidatas:
+            return None
+        return random.choice(candidatas)
+
+    def criar_boss(self):
+        """Guarda um único chefe se houver posição livre; informa se criou."""
+        if self.estado != "jogando" or self.boss_ativo:
+            return False
+
+        posicao = self.escolher_posicao_boss()
+        if posicao is None:
+            return False
+
+        self.boss = spawn_boss(posicao)
+        self.boss_ativo = True
+        self.tempo_cumprimento_boss = PRAZO_CUMPRIMENTO_BOSS
+        self.atualizar_aviso_boss()
+        return True
+
+    def atualizar_aviso_boss(self):
+        """Mostra o comando e o prazo restantes do encontro ativo."""
+        if not self.boss_ativo:
+            self.aviso_chefe = ""
+            return
+        tecla = pg.key.name(TECLA_CUMPRIMENTO_BOSS).upper()
+        self.aviso_chefe = (
+            f"Chefe: {tecla} para cumprimentar | "
+            f"{self.tempo_cumprimento_boss:.1f}s"
+        )
+
+    def encerrar_encontro_boss(self):
+        """Resolve o encontro e rearma os 30 segundos de espera."""
+        if self.boss is not None:
+            self.boss["ativo"] = False
+        self.boss = None
+        self.boss_ativo = False
+        self.tempo_cumprimento_boss = 0.0
+        self.tempo_boss = 0.0
+        self.aviso_chefe = ""
+
+    def cumprimentar_boss(self):
+        """Aceita o cumprimento somente durante um encontro válido e próximo."""
+        if (self.estado != "jogando" or self.painel_pergunta is not None
+                or not self.boss_ativo or self.boss is None
+                or self.tempo_cumprimento_boss <= 0):
+            return False
+        distancia = math.hypot(
+            self.player.x - self.boss["x"], self.player.y - self.boss["y"]
+        )
+        if distancia > ALCANCE_CUMPRIMENTO_BOSS + 1e-9:
+            return False
+        self.encerrar_encontro_boss()
+        return True
+
+    def atualizar_boss(self, segundos):
+        """Atualiza espera, aparição e prazo somente durante jogo ativo."""
+        if self.estado != "jogando" or self.painel_pergunta is not None:
+            return False
+        if self.boss_ativo:
+            self.tempo_cumprimento_boss = max(
+                0.0, self.tempo_cumprimento_boss - segundos
+            )
+            if self.tempo_cumprimento_boss <= 1e-9:
+                # Resolve antes de descontar para impedir punição em outro quadro.
+                self.encerrar_encontro_boss()
+                dano_boss(self, PENALIDADE_BOSS)
+            else:
+                self.atualizar_aviso_boss()
+            return False
+        self.tempo_boss += segundos
+        if confirma_tempo(self.tempo_boss, self.boss_ativo):
+            return self.criar_boss()
+        return False
 
     def iniciar_jogo(self, nome_mapa="aleatorio"):
         """Inicia uma partida a partir do menu e ativa o controle de câmera pelo mouse.
@@ -126,17 +227,20 @@ class Game:
         pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
         pg.mouse.get_rel()
 
-    def perder_chance(self, quantidade=1):
+    def perder_chance(self, quantidade=1, reiniciar_rodada=True):
         """Desconta chances do jogador e verifica se houve Game Over ou nova tentativa.
 
         Parâmetros:
             quantidade (int, opcional): Quantidade de chances perdidas (padrão: 1).
+            reiniciar_rodada (bool): False para penalidade do chefe; mantém mapa e tarefas.
         """
         self.chances = tomar_dano(self.chances, quantidade)
         if jogador_perdeu(self.chances):
             self.encerrar_partida()
-        else:
+        elif reiniciar_rodada:
             # Ao estourar o tempo mas ainda ter chances, sorteia novo layout e reseta o tempo
+            if self.boss_ativo:
+                self.encerrar_encontro_boss()
             self.trocar_mapa("aleatorio")
 
     def encerrar_partida(self):
@@ -145,6 +249,8 @@ class Game:
         Parâmetros:
             Nenhum.
         """
+        self.encerrar_encontro_boss()
+        self.painel_pergunta = None
         if self.pontos > self.recorde:
             self.recorde = self.pontos
             salvar_recorde(CAMINHO_RECORDE, self.recorde)
@@ -174,14 +280,14 @@ class Game:
         Parâmetros:
             Nenhum.
         """
-        if self.estado == "jogando":
+        if self.estado == "jogando" and self.painel_pergunta is None:
             self.player.update()
             self.raycasting.update()
-            if self.painel_pergunta is None: 
-                self.tempo_boss += self.delta_time / 1000.0
             self.tempo_restante = max(0.0, self.tempo_restante - self.delta_time / 1000.0)
             if self.tempo_restante <= 0:
                 self.perder_chance(1)
+            else:
+                self.atualizar_boss(self.delta_time / 1000.0)
             titulo_janela = (
                 f'Rodada {self.rodada} ({self.map.nome_exibicao}) '
                 f'| FPS: {self.clock.get_fps():.1f}'
@@ -321,7 +427,7 @@ class Game:
         elif self.estado == "guia":           # NOVO
             self.tela_guia.draw()             # NOVO
         elif self.estado == "ranking":        # NOVO PACAS 28/11
-            self.tela_ranking.tratar_evento(event)
+            self.tela_ranking.draw()
         else:
             self.object_renderer.draw()
             self.desenhar_hud()
@@ -344,7 +450,9 @@ class Game:
             if event.type == pg.QUIT:
                 self.sair()
             elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                if self.estado == "guia":
+                if self.estado == "ranking":
+                    self.tela_ranking.tratar_evento(event)
+                elif self.estado == "guia":
                     self.tela_guia.voltar()
                 elif self.estado == "menu" and self.tela_inicial.digitando:
                     self.tela_inicial.digitando = False  # ESC cancela só a edição do nome
@@ -354,10 +462,15 @@ class Game:
                 self.tela_inicial.tratar_evento(event)
             elif self.estado == 'guia':
                 self.tela_guia.tratar_evento(event)
+            elif self.estado == 'ranking':
+                self.tela_ranking.tratar_evento(event)
             elif self.estado == 'game_over':
                 if event.type == pg.KEYDOWN and event.key in (pg.K_RETURN, pg.K_SPACE):
                     self.estado = "menu"
             elif self.estado == 'jogando':
+                if (event.type == pg.KEYDOWN and event.key == TECLA_CUMPRIMENTO_BOSS
+                        and self.cumprimentar_boss()):
+                    continue  # O evento de cumprimento já foi consumido.
                 interagiu = (
                     (event.type == pg.MOUSEBUTTONDOWN and event.button == 1)
                     or (event.type == pg.KEYDOWN and event.key == pg.K_e)

@@ -23,6 +23,12 @@ TEMPO_INICIAL_RODADA = 45.0  # Tempo (em segundos) da 1ª rodada
 REDUCAO_TEMPO_RODADA = 3.0   # Segundos reduzidos a cada rodada vencida
 TEMPO_MINIMO_RODADA = 15.0   # Limite mínimo de tempo por rodada
 
+# Regras do cumprimento do chefe, confirmadas para Q05/Q06.
+TECLA_CUMPRIMENTO_BOSS = ord("f")
+ALCANCE_CUMPRIMENTO_BOSS = 1.8
+PRAZO_CUMPRIMENTO_BOSS = 5.0
+PENALIDADE_BOSS = 1
+
 # Configurações de controle da câmera pelo mouse
 MOUSE_SENSITIVITY = 0.0003
 MOUSE_MAX_REL = 40   # Limita saltos bruscos do cursor por frame
