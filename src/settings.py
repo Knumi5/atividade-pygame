@@ -61,6 +61,8 @@ CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
 CAMINHO_SPRITES = str(BASE_DIR / "assets" / "imagens" / "spritesheet.bmp")
 CAMINHO_TEXTURAS = BASE_DIR / "assets" / "imagens" / "texturas"
 CAMINHO_BOSS = BASE_DIR / "assets" / "imagens" / "chefe.png"
+CAMINHO_TRILHA = BASE_DIR / "assets" / "sons" / "escritorio_loop.wav"
+CAMINHO_SUSTO = BASE_DIR / "assets" / "sons" / "chefe_susto.wav"
 
 # Dimensões padrão das texturas de parede (em pixels)
 TEXTURE_SIZE = 256
