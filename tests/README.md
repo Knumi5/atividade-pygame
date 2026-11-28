@@ -1,18 +1,19 @@
 # Testes
 
-Esta pasta contem testes automatizados do projeto.
+Na raiz, com as dependências instaladas: `python -m pytest -q`.
+Resultado em 28/11/2026: **186 aprovados**, sem exclusões.
 
-## Arquivos
+| Arquivo | Cobertura |
+| --- | --- |
+| test_logica.py | Pontos, chances, nomes, recorde e ranking existentes |
+| test_tarefas.py | Banco de perguntas e comparação das respostas |
+| test_missoes.py | Digitação, cancelamento, respostas, rodadas e derrota |
+| test_spawn_boss.py | Criação, posição válida e integração nos cinco mapas |
+| test_encontros_boss.py | Q04-Q07: espera, F, prazo, penalidade e transições |
+| test_entrega_quinta_sexta.py | Caminho, colisão, oclusão, pausa real, recursos, áudio, susto e guia |
 
-- `test_logica.py`: valida funcoes puras de logica em `src/funcoes.py`.
-
-## Como executar
-
-```bash
-python -m pytest
-```
-
-## Boas praticas
-
-- Crie testes para toda regra de pontuacao, vidas e condicoes de fim de jogo.
-- Prefira funcoes pequenas e testaveis no modulo `src/funcoes.py`.
+Os testes usam eventos/superfícies reais do Pygame, drivers SDL dummy e dados
+persistentes em diretórios temporários. Os testes de áudio combinam um mixer
+simulado para observar chamadas com carregamento de WAVs no mixer real dummy.
+Não verificam audição, teclado/mouse físicos ou desempenho na máquina final.
+Critérios, diagnóstico inicial e etapas: `docs/aceite_quinta_sexta.md`.

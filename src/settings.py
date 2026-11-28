@@ -23,6 +23,17 @@ TEMPO_INICIAL_RODADA = 45.0  # Tempo (em segundos) da 1ª rodada
 REDUCAO_TEMPO_RODADA = 3.0   # Segundos reduzidos a cada rodada vencida
 TEMPO_MINIMO_RODADA = 15.0   # Limite mínimo de tempo por rodada
 
+# Regras do cumprimento do chefe, confirmadas para Q05/Q06.
+TECLA_CUMPRIMENTO_BOSS = ord("f")
+ALCANCE_CUMPRIMENTO_BOSS = 1.8
+PRAZO_CUMPRIMENTO_BOSS = 5.0
+PENALIDADE_BOSS = 1
+VELOCIDADE_BOSS = 1.4        # Células por segundo
+RAIO_BOSS = 0.18
+DISTANCIA_PARADA_BOSS = 0.85
+VOLUME_INICIAL = 0.25
+DURACAO_JUMPSCARE = 1.2
+
 # Configurações de controle da câmera pelo mouse
 MOUSE_SENSITIVITY = 0.0003
 MOUSE_MAX_REL = 40   # Limita saltos bruscos do cursor por frame
@@ -45,11 +56,15 @@ COR_CHAO = (50, 56, 66)
 COR_PAREDE_ESCRITORIO = (175, 162, 138)  # Bege corporativo
 COR_TAREFA_PENDENTE = (0, 200, 255)      # Terminal azul/ciano
 COR_TAREFA_CONCLUIDA = (0, 220, 100)     # Terminal verde
+COR_TAREFA_ERRADA = (190, 65, 60)        # Terminal resolvido com erro
 
 # Caminhos absolutos para arquivos persistentes e recursos
 CAMINHO_RECORDE = str(BASE_DIR / "data" / "recorde.txt")
 CAMINHO_SPRITES = str(BASE_DIR / "assets" / "imagens" / "spritesheet.bmp")
 CAMINHO_TEXTURAS = BASE_DIR / "assets" / "imagens" / "texturas"
+CAMINHO_BOSS = BASE_DIR / "assets" / "imagens" / "chefe.png"
+CAMINHO_TRILHA = BASE_DIR / "assets" / "sons" / "escritorio_loop.wav"
+CAMINHO_SUSTO = BASE_DIR / "assets" / "sons" / "chefe_susto.wav"
 
 # Dimensões padrão das texturas de parede (em pixels)
 TEXTURE_SIZE = 256

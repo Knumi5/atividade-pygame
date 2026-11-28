@@ -1,6 +1,6 @@
 # Proposta Inicial do Jogo
 
-Este documento deve ser preenchido pelo grupo na etapa inicial do projeto.
+Proposta do grupo, com controles e quantidade de chances alinhados à implementação em 28/11/2026.
 
 A proposta deve apresentar uma ideia simples, clara e viável para ser desenvolvida com **Python e Pygame** dentro do prazo disponível. Consulte o enunciado publicado no Canvas para conhecer o eixo temático e as orientações vigentes.
 
@@ -60,7 +60,7 @@ Descreva o objetivo principal. Por exemplo: coletar itens, sobreviver por determ
 
 Liste até cinco regras que expliquem o funcionamento do jogo. Exemplos: o jogador começa com três vidas; acertos somam pontos; colisões retiram vidas.
 
-- Regra 1: Você tem 3 chances.
+- Regra 1: Você tem 5 chances.
 - Regra 2: Você DEVE completar tarefas para ganhar pontos
 - Regra 3: Não terminar todas as tarefas custa 1 chance
 - Regra 4: Ao perder todas as chances, é Game Over.
@@ -87,11 +87,7 @@ Explique quando a partida termina ou como o jogador perde. Exemplos: esgotar as 
 Descreva brevemente os elementos mais importantes, sem precisar detalhar a implementação.
 
 - **Personagem ou elemento principal:**
-<<<<<<< HEAD
 > O Programador (Prestes a ficar desempregado).
-=======
-> O Programador (Prestes a ficar em desemprego).
->>>>>>> 5045b6df4feb8c508076b1ab28b484739e9c5e35
 - **Obstáculos ou desafios:**
 > As tarefas e o seu chefe, juntamente com o tempo.
 - **Itens ou objetos de interação (se houver):**
@@ -105,21 +101,16 @@ Informe como o jogador vai interagir com o jogo (por exemplo, setas para movimen
 
 **Controles:**
 
-<<<<<<< HEAD
 > W = Andar para frente.
 > A = Andar para a esquerda.
 > S = Andar para trás.
 > D = Andar para a direita.
 > Seta Esquerda - Girar para a esquerda.
 > Seta Direita - Girar para a direita.
-> Mouse1 = Botão de interação.
-=======
-> W = Ir para frente
-> A = Girar para a esquerda
-> S = Ir para trás
-> D = Girar para a direita
-> Mouse1 = Botão de interação
->>>>>>> 5045b6df4feb8c508076b1ab28b484739e9c5e35
+> Mouse1 / E = Abrir terminal.
+> F = Cumprimentar o chefe (até 1,8 célula, em 5 segundos, sem parede).
+> ENTER / ESC = Confirmar / cancelar pergunta.
+> F10 = Mudo; - / + = Volume durante exploração.
 
 ## 12. Principais dificuldades esperadas
 
@@ -135,11 +126,7 @@ Descreva a **versão mais simples que já seria jogável**, com as interações 
 
 **Escopo mínimo:**
 
-<<<<<<< HEAD
 > Cenário 3D (Estilo DOOM/Wolfenstein 3D) funcional.
-=======
-> Cenário 3D (Estilo DOOM) funcional.
->>>>>>> 5045b6df4feb8c508076b1ab28b484739e9c5e35
 > Errar uma tarefa te faz perder uma chance, e não conta como completa. (mas diminui o total de tarefas).
 > O chefe aparecera a cada 30 segundos, você deve interagir com ele ou perderá uma chance, a não ser que você esteja em uma tarefa. Ele agirá como um inimigo do DOOM, chegando perto de você e esperando por alguns segundos a interação.
 > As tarefas serão perguntas de programação simples com resposta em lowercase.
