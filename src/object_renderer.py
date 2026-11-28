@@ -192,6 +192,15 @@ class ObjectRenderer:
                 colunas += 1
         return colunas
 
+    def desenhar_susto(self, progresso):
+        """Sobreposição com zoom contínuo, sem pausa bloqueante ou flashes."""
+        self.screen.fill((48, 7, 17))
+        largura, altura = self.sprite_boss.get_size()
+        rosto = self.sprite_boss.subsurface((largura // 4, altura // 32, largura // 2, altura // 3))
+        lado = round(HEIGHT * (0.85 + min(1.0, max(0.0, progresso)) * .45))
+        imagem = pg.transform.scale(rosto, (lado, lado))
+        self.screen.blit(imagem, imagem.get_rect(center=(HALF_WIDTH, HALF_HEIGHT)))
+
     def draw(self):
         """Renderiza o cenário 3D completo (fundo + paredes texturizadas).
 

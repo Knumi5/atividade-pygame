@@ -16,6 +16,7 @@ if __package__:
     from .object_renderer import ObjectRenderer
     from .raycasting import RayCasting
     from .tela_ranking import Tela_Ranking
+    from .audio import AudioManager
     from .tarefas import LIMITE_RESPOSTA, distribuir_perguntas, normalizar_resposta, validar_resposta
 else:
     from boss import confirma_tempo, spawn_boss, dano_boss, locomoção_boss, linha_livre
@@ -30,6 +31,7 @@ else:
     from object_renderer import ObjectRenderer
     from raycasting import RayCasting
     from tela_ranking import Tela_Ranking
+    from audio import AudioManager
     from tarefas import LIMITE_RESPOSTA, distribuir_perguntas, normalizar_resposta, validar_resposta
 
 
@@ -48,6 +50,8 @@ class Game:
             Nenhum.
         """
         pg.init()
+        self.audio = AudioManager()
+        self.jumpscare_restante = 0.0
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.delta_time = 1
@@ -233,6 +237,8 @@ class Game:
         """
         self.new_game(nome_mapa)
         self.estado = "jogando"
+        self.jumpscare_restante = 0.0
+        self.audio.iniciar_partida()
         pg.mouse.set_visible(False)
         pg.event.set_grab(True)
         pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
@@ -271,6 +277,8 @@ class Game:
         Parâmetros:
             Nenhum.
         """
+        if self.estado == "game_over":
+            return
         self.encerrar_encontro_boss()
         self.painel_pergunta = None
         if self.pontos > self.recorde:
@@ -282,6 +290,8 @@ class Game:
         salvar_melhor("Gustavo", pontuacao_gustavo)
         salvar_melhor(self.nome_jogador, self.pontos)
         self.estado = "game_over"
+        self.jumpscare_restante = DURACAO_JUMPSCARE
+        self.audio.tocar_susto()
         pg.event.set_grab(False)
         pg.mouse.set_visible(True)
 
@@ -377,6 +387,7 @@ class Game:
         """
         pg.event.set_grab(False)
         pg.mouse.set_visible(True)
+        self.audio.encerrar()
         pg.quit()
         sys.exit()
 
@@ -386,6 +397,8 @@ class Game:
         Parâmetros:
             Nenhum.
         """
+        if self.estado == "game_over":
+            self.jumpscare_restante = max(0.0, self.jumpscare_restante - self.delta_time / 1000.0)
         if self.estado == "jogando" and not self.em_tarefa:
             self.player.update()
             self.raycasting.update()
@@ -473,6 +486,10 @@ class Game:
             cor_tempo,
         )
         self._desenhar_caixa_hud([tempo_surf], WIDTH - 20, 16, alinhar_direita=True)
+        status_audio = ("indisponível" if not self.audio.disponivel else
+                        "mudo" if self.audio.mudo else f"{round(self.audio.volume * 100)}%")
+        dica_audio = self.fonte_hud.render(f"Áudio: {status_audio} | F10: mudo | - / +: volume", True, "gray")
+        self._desenhar_caixa_hud([dica_audio], 20, HEIGHT - 58)
 
         # Espaço previsto para avisos do chefe (abaixo da barra superior) e painel de pergunta
         if self.aviso_chefe:
@@ -600,6 +617,8 @@ class Game:
             self.tela_inicial.draw()
         elif self.estado == 'game_over':
             self.desenhar_game_over()
+            if self.jumpscare_restante > 0:
+                self.object_renderer.desenhar_susto(1 - self.jumpscare_restante / DURACAO_JUMPSCARE)
         elif self.estado == "guia":           # NOVO
             self.tela_guia.draw()             # NOVO
         elif self.estado == "ranking":        # NOVO PACAS 28/11
@@ -618,8 +637,13 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.sair()
+            elif event.type == pg.KEYDOWN and event.key == pg.K_F10:
+                self.audio.alternar_mudo()
             elif self.em_tarefa:
                 self.tratar_evento_pergunta(event)
+            elif (event.type == pg.KEYDOWN and self.estado == "jogando"
+                  and event.key in (pg.K_MINUS, pg.K_KP_MINUS, pg.K_PLUS, pg.K_EQUALS, pg.K_KP_PLUS)):
+                self.audio.ajustar_volume(-0.05 if event.key in (pg.K_MINUS, pg.K_KP_MINUS) else 0.05)
             elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 if self.estado == "ranking":
                     self.tela_ranking.tratar_evento(event)
@@ -636,7 +660,8 @@ class Game:
             elif self.estado == 'ranking':
                 self.tela_ranking.tratar_evento(event)
             elif self.estado == 'game_over':
-                if event.type == pg.KEYDOWN and event.key in (pg.K_RETURN, pg.K_SPACE):
+                if (self.jumpscare_restante <= 0 and event.type == pg.KEYDOWN
+                        and event.key in (pg.K_RETURN, pg.K_SPACE)):
                     self.estado = "menu"
             elif self.estado == 'jogando':
                 if (event.type == pg.KEYDOWN and event.key == TECLA_CUMPRIMENTO_BOSS

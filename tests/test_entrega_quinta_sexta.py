@@ -292,3 +292,51 @@ def test_update_nao_inicia_trilha_por_quadro(final_game,monkeypatch):
     def nao_reiniciar():pytest.fail("Não deve reiniciar música no quadro")
     monkeypatch.setattr(final_game.audio,"iniciar_trilha",nao_reiniciar)
     avancar(final_game,.016);final_game.draw()
+
+
+def test_enter_aguarda_susto_e_nova_partida_rearma(final_game):
+    final_game.encerrar_partida()
+    pg.event.post(pg.event.Event(pg.KEYDOWN, key=pg.K_RETURN, unicode=""))
+    final_game.check_events()
+    assert final_game.estado == "game_over"
+    avancar(final_game, 2)
+    pg.event.post(pg.event.Event(pg.KEYDOWN, key=pg.K_RETURN, unicode=""))
+    final_game.check_events()
+    assert final_game.estado == "menu"
+    final_game.iniciar_jogo("layout_1")
+    assert final_game.jumpscare_restante == 0 and final_game.audio.susto_tocado is False
+
+
+def test_audio_real_carrega_wavs_e_teclas_nao_digitam_na_pergunta(final_game):
+    assert final_game.audio.disponivel
+    final_game.abrir_pergunta(next(iter(final_game.map.tarefas_pendentes)))
+    pg.event.post(pg.event.Event(pg.KEYDOWN, key=pg.K_F10, unicode=""))
+    pg.event.post(pg.event.Event(pg.KEYDOWN, key=pg.K_MINUS, unicode="-"))
+    final_game.check_events()
+    assert final_game.audio.mudo is True
+    assert final_game.painel_pergunta["digitado"] == "-"
+
+
+def test_arquivo_de_audio_ausente_falha_sem_excecao(tmp_path, monkeypatch):
+    from src import audio
+    monkeypatch.setattr(audio, "CAMINHO_TRILHA", tmp_path / "ausente.wav")
+    pg.mixer.init()
+    manager = audio.AudioManager()
+    assert manager.disponivel is False
+    manager.iniciar_partida()
+    pg.mixer.quit()
+
+
+def test_guia_preserva_todas_as_palavras_ao_quebrar_linhas(final_game):
+    guia = final_game.tela_guia
+    texto = "O chefe segue o jogador sem atravessar paredes e respeita as perguntas."
+    linhas = guia.quebrar_linhas(texto, guia.fonte_texto, 250)
+    assert " ".join(linhas) == texto
+
+
+def test_guia_rola_nos_dois_sentidos_e_com_mouse(final_game):
+    guia = final_game.tela_guia
+    guia.tratar_evento(pg.event.Event(pg.MOUSEWHEEL, y=-1))
+    assert guia.scroll > 0
+    guia.tratar_evento(pg.event.Event(pg.KEYDOWN, key=pg.K_UP, unicode=""))
+    assert guia.scroll == 0

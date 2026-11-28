@@ -11,6 +11,9 @@ class Guia_jogo:
         ("comando", "A", "andar para a esquerda"),
         ("comando", "Mouse", "mover a câmera"),
         ("comando", "Mouse 1 / E", "interagir com as tarefas"),
+        ("comando", "F", "cumprimentar o chefe próximo e visível"),
+        ("comando", "F10", "ativar/desativar o som"),
+        ("comando", "- / +", "ajustar volume durante a exploração"),
         ("texto", "Ache as tarefas pelo mapa e termine-as antes do tempo acabar!"),
         ("texto", "As tarefas não são indicadas, então explore cada canto e use o mouse "
         "para olhar ao redor."),
@@ -18,7 +21,9 @@ class Guia_jogo:
         
         ("texto", "O chefe aparece após 30 segundos de jogo ativo. Aproxime-se e pressione F para cumprimentá-lo."),
         ("texto", "Você tem 5 segundos para cumprir a exigência, a até 1,8 célula de distância. Se não cumprir, perde uma chance, sem reiniciar a rodada."),
-        ("texto", "Durante uma pergunta, os cronômetros ficam pausados. Depois do encontro, uma nova espera de 30 segundos começa.")]
+        ("texto", "Durante uma pergunta, o chefe, jogador e cronômetros ficam pausados. Depois do encontro, uma nova espera de 30 segundos começa."),
+        ("texto", "Use ENTER para confirmar a resposta, Backspace para apagar e ESC para cancelar. Acerto soma 1 ponto; erro desconta 1 chance."),
+        ("texto", "A derrota apresenta um susto visual e sonoro curto antes do resumo. F10 também silencia esse efeito.")]
 
     def __init__(self, game):
         self.game = game
@@ -38,6 +43,7 @@ class Guia_jogo:
                 atual = teste
             else:
                 linhas.append(atual)
+                atual = palavra
 
         if atual:
             linhas.append(atual)
@@ -81,10 +87,12 @@ class Guia_jogo:
         if evento.type == pg.KEYDOWN:
             if evento.key in (pg.K_BACKSPACE, pg.K_RETURN):
                 self.voltar()
+            elif evento.key in (pg.K_UP, pg.K_w):
+                self.rolar(-self.passo_scroll)
             elif evento.key in (pg.K_DOWN, pg.K_s):
                 self.rolar(self.passo_scroll)
-            elif evento.type == pg.MOUSEWHEEL:
-                self._rolar(-evento.y * self.passo_scroll)
+        elif evento.type == pg.MOUSEWHEEL:
+            self.rolar(-evento.y * self.passo_scroll)
 
     def rolar(self, delta):
         self.scroll = max(0, min(self.scroll_max, self.scroll + delta))

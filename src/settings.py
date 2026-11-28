@@ -31,6 +31,8 @@ PENALIDADE_BOSS = 1
 VELOCIDADE_BOSS = 1.4        # Células por segundo
 RAIO_BOSS = 0.18
 DISTANCIA_PARADA_BOSS = 0.85
+VOLUME_INICIAL = 0.25
+DURACAO_JUMPSCARE = 1.2
 
 # Configurações de controle da câmera pelo mouse
 MOUSE_SENSITIVITY = 0.0003
